@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Stray_Home_Infrastructure\Stray_Home_Infrastructure.csproj" />
+    <ProjectReference Include="..\Stray_Home_Infrastructure\StrayHome.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
