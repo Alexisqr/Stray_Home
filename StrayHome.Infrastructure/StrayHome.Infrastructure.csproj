@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\StrayHome.Domain.csproj" />
+    <ProjectReference Include="..\StrayHome.Domain\StrayHome.Domain.csproj" />
   </ItemGroup>
 
 </Project>

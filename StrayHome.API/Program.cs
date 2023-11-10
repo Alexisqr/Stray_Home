@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Stray_Home_Infrastructure.Data;
+using StrayHome.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

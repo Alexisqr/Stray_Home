@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Stray_Home_Infrastructure.Data;
+using StrayHome.Infrastructure.Data;
 
 #nullable disable
 

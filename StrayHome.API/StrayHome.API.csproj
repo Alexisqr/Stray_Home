@@ -18,7 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StrayHome.Infrastructure\StrayHome.Infrastructure.csproj" />
     <ProjectReference Include="..\Stray_Home_Infrastructure\StrayHome.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Stray_Home_Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StrayHome.Domain.Entities;
 
-namespace Stray_Home_Infrastructure.Configurations
+namespace StrayHome.Infrastructure.Configurations
 {
     public class ShopItemConfiguration : IEntityTypeConfiguration<ShopItem>
     {
