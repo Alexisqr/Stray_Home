@@ -1,13 +1,12 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Stray_Home_Infrastructure.Migrations
+namespace StrayHome.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,8 +18,7 @@ namespace Stray_Home_Infrastructure.Migrations
                 name: "ShopItems",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: false)
@@ -40,11 +38,12 @@ namespace Stray_Home_Infrastructure.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Username = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Salt = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Role = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -62,15 +61,14 @@ namespace Stray_Home_Infrastructure.Migrations
                 name: "Shelters",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Address = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ContactInfo = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    AdministratorID = table.Column<int>(type: "int", nullable: false)
+                    AdministratorID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -88,13 +86,14 @@ namespace Stray_Home_Infrastructure.Migrations
                 name: "UserShopItems",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    ShopItemID = table.Column<int>(type: "int", nullable: false),
+                    ID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UserID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ShopItemID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     OrderDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserShopItems", x => new { x.UserID, x.ShopItemID });
+                    table.PrimaryKey("PK_UserShopItems", x => x.ID);
                     table.ForeignKey(
                         name: "FK_UserShopItems_ShopItems_ShopItemID",
                         column: x => x.ShopItemID,
@@ -114,8 +113,7 @@ namespace Stray_Home_Infrastructure.Migrations
                 name: "Animals",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: false)
@@ -123,7 +121,7 @@ namespace Stray_Home_Infrastructure.Migrations
                     Photos = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsAvailableForAdoption = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ShelterID = table.Column<int>(type: "int", nullable: false)
+                    ShelterID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -141,13 +139,12 @@ namespace Stray_Home_Infrastructure.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Text = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    ShelterID = table.Column<int>(type: "int", nullable: false)
+                    UserID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ShelterID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -171,14 +168,13 @@ namespace Stray_Home_Infrastructure.Migrations
                 name: "News",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Title = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Text = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PublicationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ShelterID = table.Column<int>(type: "int", nullable: false)
+                    ShelterID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -196,8 +192,8 @@ namespace Stray_Home_Infrastructure.Migrations
                 name: "UserAnimals",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    AnimalID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    AnimalID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     SubmissionDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -252,6 +248,11 @@ namespace Stray_Home_Infrastructure.Migrations
                 name: "IX_UserShopItems_ShopItemID",
                 table: "UserShopItems",
                 column: "ShopItemID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserShopItems_UserID",
+                table: "UserShopItems",
+                column: "UserID");
         }
 
         /// <inheritdoc />

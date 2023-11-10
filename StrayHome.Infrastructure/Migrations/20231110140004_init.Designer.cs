@@ -8,11 +8,11 @@ using StrayHome.Infrastructure.Data;
 
 #nullable disable
 
-namespace Stray_Home_Infrastructure.Migrations
+namespace StrayHome.Infrastructure.Migrations
 {
     [DbContext(typeof(StrayHomeContext))]
-    [Migration("20231019174624_first")]
-    partial class first
+    [Migration("20231110140004_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,11 +22,11 @@ namespace Stray_Home_Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.Animal", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.Animal", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -43,8 +43,8 @@ namespace Stray_Home_Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("ShelterID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ShelterID")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("ID");
 
@@ -53,24 +53,24 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.ToTable("Animals");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.Comment", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.Comment", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("ShelterID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ShelterID")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("ID");
 
@@ -81,17 +81,17 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.News", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.News", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("PublicationDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("ShelterID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ShelterID")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -108,18 +108,18 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.ToTable("News");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.Shelter", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.Shelter", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("AdministratorID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AdministratorID")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("ContactInfo")
                         .IsRequired()
@@ -136,11 +136,11 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.ToTable("Shelters");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.ShopItem", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.ShopItem", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -165,11 +165,11 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.ToTable("ShopItems");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.User", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime(6)");
@@ -186,6 +186,10 @@ namespace Stray_Home_Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Salt")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -195,13 +199,13 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.UserAnimal", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.UserAnimal", b =>
                 {
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("char(36)");
 
-                    b.Property<int>("AnimalID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AnimalID")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("SubmissionDate")
                         .HasColumnType("datetime(6)");
@@ -213,27 +217,33 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.ToTable("UserAnimals");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.UserShopItem", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.UserShopItem", b =>
                 {
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ShopItemID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("UserID", "ShopItemID");
+                    b.Property<Guid>("ShopItemID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("ID");
 
                     b.HasIndex("ShopItemID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("UserShopItems");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.Animal", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.Animal", b =>
                 {
-                    b.HasOne("Stray_Home_Domain.Entities.Shelter", "Shelter")
+                    b.HasOne("StrayHome.Domain.Entities.Shelter", "Shelter")
                         .WithMany()
                         .HasForeignKey("ShelterID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -242,15 +252,15 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.Navigation("Shelter");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.Comment", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.Comment", b =>
                 {
-                    b.HasOne("Stray_Home_Domain.Entities.Shelter", "Shelter")
+                    b.HasOne("StrayHome.Domain.Entities.Shelter", "Shelter")
                         .WithMany()
                         .HasForeignKey("ShelterID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Stray_Home_Domain.Entities.User", "User")
+                    b.HasOne("StrayHome.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -261,9 +271,9 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.News", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.News", b =>
                 {
-                    b.HasOne("Stray_Home_Domain.Entities.Shelter", "Shelter")
+                    b.HasOne("StrayHome.Domain.Entities.Shelter", "Shelter")
                         .WithMany()
                         .HasForeignKey("ShelterID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -272,9 +282,9 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.Navigation("Shelter");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.Shelter", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.Shelter", b =>
                 {
-                    b.HasOne("Stray_Home_Domain.Entities.User", "Administrator")
+                    b.HasOne("StrayHome.Domain.Entities.User", "Administrator")
                         .WithMany()
                         .HasForeignKey("AdministratorID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -283,15 +293,15 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.Navigation("Administrator");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.UserAnimal", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.UserAnimal", b =>
                 {
-                    b.HasOne("Stray_Home_Domain.Entities.Animal", "Animal")
+                    b.HasOne("StrayHome.Domain.Entities.Animal", "Animal")
                         .WithMany()
                         .HasForeignKey("AnimalID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Stray_Home_Domain.Entities.User", "User")
+                    b.HasOne("StrayHome.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -302,15 +312,15 @@ namespace Stray_Home_Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Stray_Home_Domain.Entities.UserShopItem", b =>
+            modelBuilder.Entity("StrayHome.Domain.Entities.UserShopItem", b =>
                 {
-                    b.HasOne("Stray_Home_Domain.Entities.ShopItem", "ShopItem")
+                    b.HasOne("StrayHome.Domain.Entities.ShopItem", "ShopItem")
                         .WithMany()
                         .HasForeignKey("ShopItemID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Stray_Home_Domain.Entities.User", "User")
+                    b.HasOne("StrayHome.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
