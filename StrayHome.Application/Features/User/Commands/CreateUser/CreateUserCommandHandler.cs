@@ -2,6 +2,7 @@
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.CreateShopItem;
 using StrayHome.Domain.Entities;
+using StrayHome.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,16 +22,15 @@ namespace StrayHome.Application.Features.Commands.CreateUser
 
         public async Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
+            var salt = string.Empty;
             var user = new User
             {
                 Username = request.Username,
                 Password = request.Password,
-                Salt = request.Salt,
-                Role = request.Role,
+                Salt = salt,
+                Role = UserRole.User,
                 Email = request.Email,
-                CreationDate = request.CreationDate,    
-
-
+                CreationDate = DateTime.UtcNow,
             };
 
             return await _userRepository.CreateUser(user);
