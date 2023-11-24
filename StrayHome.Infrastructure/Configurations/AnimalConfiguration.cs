@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Stray_Home_Domain.Entities;
 
-namespace Stray_Home_Infrastructure.Configurations
+using StrayHome.Domain.Entities;
+
+namespace StrayHome.Infrastructure.Configurations
 {
     public class AnimalConfiguration : IEntityTypeConfiguration<Animal>
     {

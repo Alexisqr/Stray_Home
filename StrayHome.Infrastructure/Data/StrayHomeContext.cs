@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Stray_Home_Domain.Entities;
-using Stray_Home_Infrastructure.Configurations;
+using StrayHome.Infrastructure.Configurations;
+using StrayHome.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stray_Home_Infrastructure.Data
+namespace StrayHome.Infrastructure.Data
 {
     public class StrayHomeContext : DbContext
     {

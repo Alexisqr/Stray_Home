@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Stray_Home_Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StrayHome.Domain.Entities;
 
-namespace Stray_Home_Infrastructure.Configurations
+namespace StrayHome.Infrastructure.Configurations
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
@@ -16,9 +16,13 @@ namespace Stray_Home_Infrastructure.Configurations
             builder.HasKey(u => u.ID);
             builder.Property(u => u.Username).IsRequired();
             builder.Property(u => u.Password).IsRequired();
-            builder.Property(u => u.Role).IsRequired();
+            builder.Property(u => u.Salt).IsRequired();
             builder.Property(u => u.Email);
             builder.Property(u => u.CreationDate);
+
+            builder.Property(u => u.Role)
+               .IsRequired()
+               .HasConversion<string>();
         }
     }
 }

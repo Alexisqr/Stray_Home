@@ -3,18 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrayHome.API", "StrayHome.API\StrayHome.API.csproj", "{FA686512-FEE2-4634-83C9-7531817ECED0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrayHome.API", "StrayHome.API\StrayHome.API.csproj", "{FA686512-FEE2-4634-83C9-7531817ECED0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3E6CBDFB-637F-4354-B60C-E4EC04037EBB} = {3E6CBDFB-637F-4354-B60C-E4EC04037EBB}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrayHome.Domain", "StrayHome.Domain\StrayHome.Domain.csproj", "{09AFEB4C-69F9-4DD0-8778-590F1EDD8115}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrayHome.Domain", "StrayHome.Domain\StrayHome.Domain.csproj", "{09AFEB4C-69F9-4DD0-8778-590F1EDD8115}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrayHome.Application", "StrayHome.Application\StrayHome.Application.csproj", "{0BBDFAC1-8BF3-44F3-AF2B-1E6567CA42CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrayHome.Application", "StrayHome.Application\StrayHome.Application.csproj", "{0BBDFAC1-8BF3-44F3-AF2B-1E6567CA42CE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{09AFEB4C-69F9-4DD0-8778-590F1EDD8115} = {09AFEB4C-69F9-4DD0-8778-590F1EDD8115}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrayHome.Infrastructure", "StrayHome.Infrastructure\StrayHome.Infrastructure.csproj", "{3E6CBDFB-637F-4354-B60C-E4EC04037EBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrayHome.Infrastructure", "StrayHome.Infrastructure\StrayHome.Infrastructure.csproj", "{3E6CBDFB-637F-4354-B60C-E4EC04037EBB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{09AFEB4C-69F9-4DD0-8778-590F1EDD8115} = {09AFEB4C-69F9-4DD0-8778-590F1EDD8115}
+		{0BBDFAC1-8BF3-44F3-AF2B-1E6567CA42CE} = {0BBDFAC1-8BF3-44F3-AF2B-1E6567CA42CE}
 	EndProjectSection
 EndProject
 Global
