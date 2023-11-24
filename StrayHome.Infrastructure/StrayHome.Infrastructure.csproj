@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\StrayHome.Domain.csproj" />
+    <ProjectReference Include="..\StrayHome.Application\StrayHome.Application.csproj" />
     <ProjectReference Include="..\StrayHome.Domain\StrayHome.Domain.csproj" />
   </ItemGroup>
 

@@ -18,6 +18,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrayHome.Infrastructure", "StrayHome.Infrastructure\StrayHome.Infrastructure.csproj", "{3E6CBDFB-637F-4354-B60C-E4EC04037EBB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{09AFEB4C-69F9-4DD0-8778-590F1EDD8115} = {09AFEB4C-69F9-4DD0-8778-590F1EDD8115}
+		{0BBDFAC1-8BF3-44F3-AF2B-1E6567CA42CE} = {0BBDFAC1-8BF3-44F3-AF2B-1E6567CA42CE}
 	EndProjectSection
 EndProject
 Global
