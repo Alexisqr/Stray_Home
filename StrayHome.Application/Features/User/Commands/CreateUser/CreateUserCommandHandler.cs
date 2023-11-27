@@ -14,20 +14,23 @@ namespace StrayHome.Application.Features.Commands.CreateUser
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, User>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public CreateUserCommandHandler(IUserRepository userRepository)
+        public CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher)
         {
             _userRepository = userRepository;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var salt = string.Empty;
+            byte[] salt;
+            var password = _passwordHasher.Hash(request.Password,out salt);
             var user = new User
             {
                 Username = request.Username,
-                Password = request.Password,
-                Salt = salt,
+                Password = password,
+                Salt = Convert.ToBase64String(salt),
                 Role = UserRole.User,
                 Email = request.Email,
                 CreationDate = DateTime.UtcNow,

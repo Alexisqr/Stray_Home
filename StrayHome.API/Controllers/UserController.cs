@@ -9,7 +9,7 @@ using System.Net;
 
 namespace StrayHome.API.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class UserController : ControllerBase

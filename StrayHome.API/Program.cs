@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using StrayHome.Application.Mappings;
+using StrayHome.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,7 @@ builder.Services.AddScoped<INewsRepository, NewsRepository>();
 builder.Services.AddScoped<IShelterRepository,ShelterRepository>();
 builder.Services.AddScoped<IUserAnimalRepository, UserAnimalRepository>();
 builder.Services.AddScoped<IUserShopItemRepository, UserShopItemRepository>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddMediatR(typeof(CreateShopItemCommand));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
