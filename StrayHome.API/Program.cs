@@ -22,7 +22,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
-builder.Services.AddDbContext<StrayHomeContext>(options =>
+builder.Services.AddDbContext<IStrayHomeContext, StrayHomeContext>(options =>
 {
     options.UseMySql(builder.Configuration.GetConnectionString("StrayHomeDbContext"),
         new MySqlServerVersion(new Version(8, 0, 32)));

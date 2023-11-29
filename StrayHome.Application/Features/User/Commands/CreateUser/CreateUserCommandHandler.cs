@@ -15,11 +15,12 @@ namespace StrayHome.Application.Features.Commands.CreateUser
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
-
-        public CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher)
+        private readonly IStrayHomeContext _context;
+        public CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher, IStrayHomeContext context)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _context = context;
         }
 
         public async Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
