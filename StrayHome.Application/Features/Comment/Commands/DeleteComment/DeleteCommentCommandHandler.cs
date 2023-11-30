@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.DeleteAnimal;
 using System;
@@ -12,24 +13,29 @@ namespace StrayHome.Application.Features.Commands.DeleteComment
     public class DeleteCommentCommandHandler : IRequestHandler<DeleteCommentCommand>
     {
 
-        private readonly ICommentRepository _commentRepository;
+        private readonly IStrayHomeContext _context;
 
-        public DeleteCommentCommandHandler(ICommentRepository commentRepository)
+        public DeleteCommentCommandHandler(IStrayHomeContext context)
         {
-            _commentRepository = commentRepository;
+            _context = context;
         }
 
         public async Task<Unit> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
         {
 
-            var toDelete = await _commentRepository.GetCommentById(request.ID);
+            var toDelete = await _context.Comments.FirstAsync(p => p.ID == request.ID);
 
             if (toDelete == null)
             {
                 throw new Exception();
             }
 
-            await _commentRepository.DeleteComment(toDelete.ID);
+            var hopItem = _context.Comments
+               .FirstOrDefault(p => p.ID == toDelete.ID);
+
+            _context.Comments.Remove(hopItem);
+
+            await _context.SaveChangesAsync();
 
             return Unit.Value;
         }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Queries.GetShopItemById;
 using StrayHome.Domain.Entities;
@@ -10,20 +11,19 @@ using System.Threading.Tasks;
 
 namespace StrayHome.Application.Features.Queries.GetByIdAnimal
 {
-    internal class GetByIdAnimalQueryHandler : IRequestHandler<GetByIdAnimalQuery, Animal>
+    public class GetByIdAnimalQueryHandler : IRequestHandler<GetByIdAnimalQuery, Animal>
     {
-        private readonly IAnimalRepository _animalRepository;
+        private readonly IStrayHomeContext _context;
 
-        public GetByIdAnimalQueryHandler(IAnimalRepository animalRepository)
+        public GetByIdAnimalQueryHandler(IStrayHomeContext context)
         {
-            _animalRepository = animalRepository;
+            _context = context;
         }
 
         public async Task<Animal> Handle(GetByIdAnimalQuery request, CancellationToken cancellationToken)
         {
-            return await _animalRepository.GetAnimalById(request.ID);
+            return await _context.Animals.FirstAsync(p => p.ID == request.ID);
         }
-
 
     }
 }

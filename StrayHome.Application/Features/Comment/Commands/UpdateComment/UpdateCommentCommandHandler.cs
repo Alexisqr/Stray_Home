@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.UpdateAnimal;
 using StrayHome.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,18 +15,18 @@ namespace StrayHome.Application.Features.Commands.UpdateComment
 {
     public class UpdateCommentCommandHandler : IRequestHandler<UpdateCommentCommand, Comment>
     {
-        private readonly ICommentRepository _commentRepository;
+        private readonly IStrayHomeContext _context;
         private readonly IMapper _mapper;
 
-        public UpdateCommentCommandHandler(ICommentRepository commentRepository, IMapper mapper)
+        public UpdateCommentCommandHandler(IStrayHomeContext context, IMapper mapper)
         {
-            _commentRepository = commentRepository;
+            _context = context;
             _mapper = mapper;
         }
 
         public async Task<Comment> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
         {
-            var ToUpdate = await _commentRepository.GetCommentById(request.ID);
+            var ToUpdate = await _context.Comments.FirstAsync(p => p.ID == request.ID);
             if (ToUpdate == null)
             {
                 throw new Exception();
@@ -41,11 +43,15 @@ namespace StrayHome.Application.Features.Commands.UpdateComment
                     destinationProperty?.SetValue(ToUpdate, sourceValue);
                 }
             }
+        
+            var comment = await _context.Comments.FirstOrDefaultAsync(p => p.ID == ToUpdate.ID);
+            comment.Text = ToUpdate.Text;
+            comment.CreationDate = ToUpdate.CreationDate;
+            comment.UserID = ToUpdate.UserID;
+            comment.ShelterID = ToUpdate.ShelterID;
+            await _context.SaveChangesAsync();
 
-            await _commentRepository.UpdateComment(ToUpdate);
-
-
-            return ToUpdate;
+            return comment;
         }
 
 

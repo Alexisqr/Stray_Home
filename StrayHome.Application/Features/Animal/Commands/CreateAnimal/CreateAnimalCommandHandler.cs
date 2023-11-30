@@ -12,11 +12,11 @@ namespace StrayHome.Application.Features.Commands.CreateAnimal
 {
     public class CreateAnimalCommandHandler : IRequestHandler<CreateAnimalCommand, Animal>
     {
-        private readonly IAnimalRepository _animalRepository;
+        private readonly IStrayHomeContext _context;
 
-        public CreateAnimalCommandHandler(IAnimalRepository animalRepository)
+        public CreateAnimalCommandHandler(IStrayHomeContext context)
         {
-            _animalRepository = animalRepository;
+            _context = context;
         }
 
         public async Task<Animal> Handle(CreateAnimalCommand request, CancellationToken cancellationToken)
@@ -31,7 +31,12 @@ namespace StrayHome.Application.Features.Commands.CreateAnimal
 
             };
 
-            return await _animalRepository.CreateAnimal(animal);
+            _context.Animals.Add(animal);
+
+            await _context.SaveChangesAsync();
+
+            return animal;
+           
         }
     }
 }

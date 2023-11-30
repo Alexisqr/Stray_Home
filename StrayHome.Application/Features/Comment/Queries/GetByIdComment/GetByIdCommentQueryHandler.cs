@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Queries.GetByIdComment;
 using StrayHome.Domain.Entities;
@@ -12,16 +13,16 @@ namespace StrayHome.Application.Features.Queries.GetAllComment
 {
     public class GetByIdCommentQueryHandler : IRequestHandler<GetByIdCommentQuery, Comment>
     {
-        private readonly ICommentRepository _commentRepository;
+        private readonly IStrayHomeContext _context;
 
-        public GetByIdCommentQueryHandler(ICommentRepository commentRepository)
+        public GetByIdCommentQueryHandler(IStrayHomeContext context)
         {
-            _commentRepository = commentRepository;
+            _context = context;
         }
 
         public async Task<Comment> Handle(GetByIdCommentQuery request, CancellationToken cancellationToken)
         {
-            return await _commentRepository.GetCommentById(request.ID);
+            return await _context.Comments.FirstAsync(p => p.ID == request.ID);
         }
 
     }

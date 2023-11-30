@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.UpdateShopItem;
 using StrayHome.Domain.Entities;
@@ -13,18 +14,19 @@ namespace StrayHome.Application.Features.Commands.UpdateAnimal
 {
     public class UpdateAnimalCommandHandler : IRequestHandler<UpdateAnimalCommand, Animal>
     {
-        private readonly IAnimalRepository _animalRepository;
+        private readonly IStrayHomeContext _context;
         private readonly IMapper _mapper;
 
-        public UpdateAnimalCommandHandler(IAnimalRepository animalRepository, IMapper mapper)
+        public UpdateAnimalCommandHandler(IStrayHomeContext context, IMapper mapper)
         {
-            _animalRepository = animalRepository;
+            _context = context;
             _mapper = mapper;
         }
 
         public async Task<Animal> Handle(UpdateAnimalCommand request, CancellationToken cancellationToken)
         {
-            var ToUpdate = await _animalRepository.GetAnimalById(request.ID);
+            var ToUpdate = await _context.Animals.FirstAsync(p => p.ID == request.ID);
+
             if (ToUpdate == null)
             {
                 throw new Exception();
@@ -41,11 +43,16 @@ namespace StrayHome.Application.Features.Commands.UpdateAnimal
                     destinationProperty?.SetValue(ToUpdate, sourceValue);
                 }
             }
+        
+            var animal = await _context.Animals.FirstOrDefaultAsync(p => p.ID == ToUpdate.ID);
+            animal.Name = ToUpdate.Name;
+            animal.Description = ToUpdate.Description;
+            animal.IsAvailableForAdoption = ToUpdate.IsAvailableForAdoption;
+            animal.ShelterID = ToUpdate.ShelterID;
+            animal.Photos = ToUpdate.Photos;
+            await _context.SaveChangesAsync();
 
-            await _animalRepository.UpdateAnimal(ToUpdate);
-
-
-            return ToUpdate;
+            return animal;
         }
 
 

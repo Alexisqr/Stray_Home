@@ -12,11 +12,10 @@ namespace StrayHome.Application.Features.Commands.CreateComment
 {
     public class CreateCommentCommentHandler : IRequestHandler<CreateCommentCommand, Comment>
     {
-        private readonly ICommentRepository _commentRepository;
-
-        public CreateCommentCommentHandler(ICommentRepository commentRepository)
+        private readonly IStrayHomeContext _context;
+        public CreateCommentCommentHandler(IStrayHomeContext context)
         {
-            _commentRepository = commentRepository;
+            _context = context; 
         }
 
         public async Task<Comment> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
@@ -31,7 +30,11 @@ namespace StrayHome.Application.Features.Commands.CreateComment
 
             };
 
-            return await _commentRepository.CreateComment(comment);
+            _context.Comments.Add(comment);
+
+            await _context.SaveChangesAsync();
+
+            return comment;
         }
     }
 }

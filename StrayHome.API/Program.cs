@@ -29,8 +29,6 @@ builder.Services.AddDbContext<IStrayHomeContext, StrayHomeContext>(options =>
 }
 );
 builder.Services.AddScoped<IShopltemRepository, ShopltemRepository>();
-builder.Services.AddScoped<IAnimalRepository, AnimalRepository>();
-builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<INewsRepository, NewsRepository>();
 builder.Services.AddScoped<IShelterRepository,ShelterRepository>();
 builder.Services.AddScoped<IUserAnimalRepository, UserAnimalRepository>();
