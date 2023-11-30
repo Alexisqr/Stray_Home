@@ -25,16 +25,16 @@ namespace StrayHome.Application.Features.Commands.DeleteAnimal
         {
 
             var toDelete =  await _context.Animals.FirstAsync(p => p.ID == request.ID);
-
+            if (toDelete == null)
+            {
+                throw new Exception();
+            }
             var hopItem_userAnimals = _context.UserAnimals
                 .FirstOrDefault(p => p.AnimalID == request.ID);
 
             _context.UserAnimals.Remove(hopItem_userAnimals);
 
-            if (toDelete == null)
-            {
-                throw new Exception();
-            }
+       
             var hopItem = _context.Animals
                 .FirstOrDefault(p => p.ID == toDelete.ID);
 

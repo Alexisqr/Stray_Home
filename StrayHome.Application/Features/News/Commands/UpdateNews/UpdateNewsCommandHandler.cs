@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.UpdateShopItem;
 using StrayHome.Domain.Entities;
@@ -13,18 +14,19 @@ namespace StrayHome.Application.Features.Commands.UpdateNews
 {
     public class UpdateNewsCommandHandler : IRequestHandler<UpdateNewsCommand, News>
     {
-        private readonly INewsRepository _newsRepository;
+        private readonly IStrayHomeContext _context;
         private readonly IMapper _mapper;
 
-        public UpdateNewsCommandHandler(INewsRepository newsRepository, IMapper mapper)
+        public UpdateNewsCommandHandler(IStrayHomeContext context, IMapper mapper)
         {
-            _newsRepository = newsRepository;
+            _context = context;
             _mapper = mapper;
         }
 
         public async Task<News> Handle(UpdateNewsCommand request, CancellationToken cancellationToken)
         {
-            var ToUpdate = await _newsRepository.GetNewsById(request.ID);
+            var ToUpdate = await _context.News.FirstAsync(p => p.ID == request.ID);
+
             if (ToUpdate == null)
             {
                 throw new Exception();
@@ -42,12 +44,15 @@ namespace StrayHome.Application.Features.Commands.UpdateNews
                 }
             }
 
-            await _newsRepository.UpdateNews(ToUpdate);
+            var news = await _context.News.FirstOrDefaultAsync(p => p.ID == ToUpdate.ID);
+            news.Text = ToUpdate.Text;
+            news.Title = ToUpdate.Title;
+            news.PublicationDate = ToUpdate.PublicationDate;
+            news.ShelterID = ToUpdate.ShelterID;
+            await _context.SaveChangesAsync();
 
+            return news;
 
-            return ToUpdate;
         }
-
-
     }
 }

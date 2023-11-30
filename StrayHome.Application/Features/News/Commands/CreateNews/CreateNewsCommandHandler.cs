@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.CreateComment;
 using StrayHome.Domain.Entities;
@@ -12,26 +13,33 @@ namespace StrayHome.Application.Features.Commands.CreateNews
 {
     public class CreateNewsCommandHandler : IRequestHandler<CreateNewsCommand, News>
     {
-        private readonly INewsRepository _newsRepository;
+        private readonly IStrayHomeContext _context;
 
-        public CreateNewsCommandHandler(INewsRepository newsRepository)
+        public CreateNewsCommandHandler(IStrayHomeContext context)
         {
-            _newsRepository = newsRepository;
+            _context = context;
         }
 
         public async Task<News> Handle(CreateNewsCommand request, CancellationToken cancellationToken)
         {
+            var shelterExists = await _context.Shelters.AnyAsync(s => s.ID == request.ShelterID);
+            if (!shelterExists)
+            {
+                throw new Exception($"Shelter with ID {request.ShelterID} not found");
+            }
             var news = new News
             {
                 Text = request.Text,
                 Title = request.Title,
                 PublicationDate = request.PublicationDate,
                 ShelterID = request.ShelterID,
-
-
             };
 
-            return await _newsRepository.CreateNews(news);
+            _context.News.Add(news);
+
+            await _context.SaveChangesAsync();
+
+            return news;
         }
     }
   

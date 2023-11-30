@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Queries.GetAllShopItem;
 using StrayHome.Domain.Entities;
@@ -12,16 +13,16 @@ namespace StrayHome.Application.Features.Queries.GetAllShelter
 {
     public class GetAllShelterQueryHandler : IRequestHandler<GetAllShelterQuery, IEnumerable<Shelter>>
     {
-        private readonly IShelterRepository _shelterRepository;
+        private readonly IStrayHomeContext _context;
 
-        public GetAllShelterQueryHandler(IShelterRepository shelterRepository)
+        public GetAllShelterQueryHandler(IStrayHomeContext context)
         {
-            _shelterRepository = shelterRepository;
+            _context = context;
         }
 
         public async Task<IEnumerable<Shelter>> Handle(GetAllShelterQuery request, CancellationToken cancellationToken)
         {
-            return await _shelterRepository.GetAllShelter();
+            return await _context.Shelters.ToListAsync();
         }
     }
 }
