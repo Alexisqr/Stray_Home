@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Queries.GetShopItemById;
 using StrayHome.Domain.Entities;
@@ -12,16 +13,16 @@ namespace StrayHome.Application.Features.Queries.GetByIdUser
 {
     public class GetByIdUserQueryHandler : IRequestHandler<GetByIdUserQuery, User>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IStrayHomeContext _context;
 
-        public GetByIdUserQueryHandler(IUserRepository userRepository)
+        public GetByIdUserQueryHandler(IStrayHomeContext context)
         {
-            _userRepository = userRepository;
+            _context = context;
         }
 
         public async Task<User> Handle(GetByIdUserQuery request, CancellationToken cancellationToken)
         {
-            return await _userRepository.GetUserById(request.ID);
+            return await _context.Users.FirstAsync(p => p.ID == request.ID);
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Queries.GetAllShopItem;
 using StrayHome.Domain.Entities;
@@ -12,16 +13,16 @@ namespace StrayHome.Application.Features.Queries.GetAllAnimal
 {
     public class GetAllAnimalQueryHandler : IRequestHandler<GetAllAnimalQuery, IEnumerable<Animal>>
     {
-        private readonly IAnimalRepository _animalRepository;
+        private readonly IStrayHomeContext _context;
 
-        public GetAllAnimalQueryHandler(IAnimalRepository animalRepository)
+        public GetAllAnimalQueryHandler(IStrayHomeContext context)
         {
-            _animalRepository = animalRepository;
+            _context = context;     
         }
 
         public async Task<IEnumerable<Animal>> Handle(GetAllAnimalQuery request, CancellationToken cancellationToken)
         {
-            return await _animalRepository.GetAllAnimal();
+            return await _context.Animals.ToListAsync();
         }
     }
 }

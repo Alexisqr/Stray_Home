@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Featuresb.Commands.DeleteUser;
 using System;
@@ -12,27 +13,32 @@ namespace StrayHome.Application.Features.Commands.DeleteUserShopItem
     public class DeleteUserShopItemCommandHandler : IRequestHandler<DeleteUserShopItemCommand>
     {
 
-        private readonly IUserShopItemRepository _userShopItemRepository;
+        private readonly IStrayHomeContext _context;
 
-    public DeleteUserShopItemCommandHandler(IUserShopItemRepository userShopItemRepository)
-    {
-        _userShopItemRepository = userShopItemRepository;
-    }
-
-    public async Task<Unit> Handle(DeleteUserShopItemCommand request, CancellationToken cancellationToken)
-    {
-
-        var toDelete = await _userShopItemRepository.GetUserShopItemById(request.ID);
-
-        if (toDelete == null)
+        public DeleteUserShopItemCommandHandler(IStrayHomeContext context)
         {
-            throw new Exception();
+            _context = context;
         }
 
-        await _userShopItemRepository.DeleteUserShopItem(toDelete.ID);
+        public async Task<Unit> Handle(DeleteUserShopItemCommand request, CancellationToken cancellationToken)
+        {
 
-        return Unit.Value;
-    }
+            var toDelete = await _context.UserShopItems.FirstAsync(p => p.ID == request.ID);
+
+            if (toDelete == null)
+            {
+                throw new Exception();
+            }
+
+            var hopItem = _context.UserShopItems
+             .FirstOrDefault(p => p.ID == toDelete.ID);
+
+            _context.UserShopItems.Remove(hopItem);
+
+            await _context.SaveChangesAsync();
+
+            return Unit.Value;
+        }
 
     }
 }

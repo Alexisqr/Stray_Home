@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Featuresb.Commands.DeleteUser;
+using StrayHome.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,27 +14,31 @@ namespace StrayHome.Application.Features.Commands.DeleteUserAnimal
     public class DeleteUserAnimalCommandHandler: IRequestHandler<DeleteUserAnimalCommand>
     {
 
-        private readonly IUserAnimalRepository _userAnimalRepository;
+        private readonly IStrayHomeContext _context;
 
-    public DeleteUserAnimalCommandHandler(IUserAnimalRepository userAnimalRepository)
-    {
-         _userAnimalRepository = userAnimalRepository;
-    }
-
-    public async Task<Unit> Handle(DeleteUserAnimalCommand request, CancellationToken cancellationToken)
-    {
-
-        var toDelete = await _userAnimalRepository.GetUserAnimalById(request.AnimalID);
-
-        if (toDelete == null)
+        public DeleteUserAnimalCommandHandler(IStrayHomeContext context)
         {
-            throw new Exception();
+            _context = context;
         }
 
-        await _userAnimalRepository.DeleteUserAnimal(toDelete.AnimalID);
+        public async Task<Unit> Handle(DeleteUserAnimalCommand request, CancellationToken cancellationToken)
+        { 
+            var toDelete = await _context.UserAnimals.FirstAsync(p => p.AnimalID == request.AnimalID);
 
-        return Unit.Value;
-    }
+            if (toDelete == null)
+            {
+                 throw new Exception();
+            }
+
+            var hopItem = _context.UserAnimals
+             .FirstOrDefault(p => p.AnimalID == toDelete.AnimalID);
+
+            _context.UserAnimals.Remove(hopItem);
+
+            await _context.SaveChangesAsync();
+
+            return Unit.Value;
+        }
 
     }
 }

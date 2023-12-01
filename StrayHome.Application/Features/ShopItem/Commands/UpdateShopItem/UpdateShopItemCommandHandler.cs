@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Domain.Entities;
 using System;
@@ -12,19 +13,20 @@ namespace StrayHome.Application.Features.Commands.UpdateShopItem
 {
     public class UpdateShopItemCommandHandler : IRequestHandler<UpdateShopItemCommand, ShopItem>
     {
-        private readonly IShopltemRepository _shopItemRepository;
+        private readonly IStrayHomeContext _context;
         private readonly IMapper _mapper;
 
-        public UpdateShopItemCommandHandler(IShopltemRepository shopItemRepository, IMapper mapper)
+        public UpdateShopItemCommandHandler(IStrayHomeContext context, IMapper mapper)
         {
-            _shopItemRepository = shopItemRepository;
+            _context = context;
             _mapper = mapper ;
         }
 
         public async Task<ShopItem> Handle(UpdateShopItemCommand request, CancellationToken cancellationToken)
         {
-            var orderToUpdate = await _shopItemRepository.GetShopItemById(request.ID);
-            if (orderToUpdate == null)
+            var ToUpdate = await _context.ShopItems.FirstAsync(p => p.ID == request.ID);
+
+            if (ToUpdate == null)
             {
                 throw new Exception();
             }
@@ -37,17 +39,21 @@ namespace StrayHome.Application.Features.Commands.UpdateShopItem
                 if (sourceValue != null)
                 {
                     var destinationProperty = typeof(ShopItem).GetProperty(property.Name);
-                    destinationProperty?.SetValue(orderToUpdate, sourceValue);
+                    destinationProperty?.SetValue(ToUpdate, sourceValue);
                 }
             }
 
-            await _shopItemRepository.UpdateShopItem(orderToUpdate);
-          
+            var shopItem = await _context.ShopItems.FirstOrDefaultAsync(p => p.ID == ToUpdate.ID);
+            shopItem.Name = ToUpdate.Name;
+            shopItem.Description = ToUpdate.Description;
+            shopItem.Price = ToUpdate.Price;
+            shopItem.StockQuantity = ToUpdate.StockQuantity;
+            shopItem.Photos = ToUpdate.Photos;
 
-            return orderToUpdate;
+            await _context.SaveChangesAsync();
+
+            return shopItem;
         }
-
-     
     }
 }
 

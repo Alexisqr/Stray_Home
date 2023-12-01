@@ -9,17 +9,16 @@ using System.Net;
 
 namespace StrayHome.API.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _IUserRepository;
+      
         private readonly IMediator _mediator;
 
-        public UserController(IUserRepository IUserRepository, IMediator mediator)
+        public UserController(IMediator mediator)
         {
-            _IUserRepository = IUserRepository;
             _mediator = mediator;
         }
 

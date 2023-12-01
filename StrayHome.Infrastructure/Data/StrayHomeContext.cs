@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StrayHome.Application.Contracts.Persistence;
 
 namespace StrayHome.Infrastructure.Data
 {
-    public class StrayHomeContext : DbContext
+    public class StrayHomeContext : DbContext, IStrayHomeContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Animal> Animals { get; set; }
@@ -37,6 +38,16 @@ namespace StrayHome.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new UserAnimalConfiguration());
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
 
+        }
+
+        void IStrayHomeContext.SaveChanges()
+        {
+            SaveChanges();
+        }
+
+        Task<int> IStrayHomeContext.SaveChangesAsync()
+        {
+            return SaveChangesAsync();
         }
     }
 }

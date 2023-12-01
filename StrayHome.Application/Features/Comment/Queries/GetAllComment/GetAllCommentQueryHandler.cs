@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Queries.GetAllAnimal;
 using StrayHome.Application.Features.Queries.GetAllComment;
@@ -13,16 +14,16 @@ namespace StrayHome.Application.Features.Queries.GetAllComment
 {
     public class GetAllCommentQueryHandler : IRequestHandler<GetAllCommentQuery, IEnumerable<Comment>>
     {
-        private readonly ICommentRepository _commentRepository;
+        private readonly IStrayHomeContext _context;
 
-        public GetAllCommentQueryHandler(ICommentRepository commentRepository)
+        public GetAllCommentQueryHandler(IStrayHomeContext context)
         {
-            _commentRepository = commentRepository;
+            _context = context;
         }
 
         public async Task<IEnumerable<Comment>> Handle(GetAllCommentQuery request, CancellationToken cancellationToken)
         {
-            return await _commentRepository.GetAllComment();
+            return await _context.Comments.ToListAsync();
         }
     }
 }

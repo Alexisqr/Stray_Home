@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.UpdateShopItem;
 using StrayHome.Domain.Entities;
@@ -13,23 +14,28 @@ namespace StrayHome.Application.Features.Commands.UpdateShelter
 {
     public class UpdateShelterCommandHandler : IRequestHandler<UpdateShelterCommand, Shelter>
     {
-        private readonly IShelterRepository _shelterRepository;
+        private readonly IStrayHomeContext _context;
         private readonly IMapper _mapper;
 
-        public UpdateShelterCommandHandler(IShelterRepository shelterRepository, IMapper mapper)
+        public UpdateShelterCommandHandler(IStrayHomeContext context, IMapper mapper)
         {
-            _shelterRepository = shelterRepository;
+            _context = context;
             _mapper = mapper;
         }
 
         public async Task<Shelter> Handle(UpdateShelterCommand request, CancellationToken cancellationToken)
         {
-            var ToUpdate = await _shelterRepository.GetShelterById(request.ID);
+            var ToUpdate = await _context.Shelters.FirstAsync(p => p.ID == request.ID);
             if (ToUpdate == null)
             {
                 throw new Exception();
             }
+            var administratorExists = await _context.Users.AnyAsync(s => s.ID == ToUpdate.AdministratorID);
 
+            if (!administratorExists)
+            {
+                throw new Exception($"User with ID {ToUpdate.AdministratorID} not found");
+            }
             var propertiesToUpdate = typeof(UpdateShelterCommand).GetProperties();
 
             foreach (var property in propertiesToUpdate)
@@ -42,13 +48,15 @@ namespace StrayHome.Application.Features.Commands.UpdateShelter
                 }
             }
 
-            await _shelterRepository.UpdateShelter(ToUpdate);
+            var shelter = await _context.Shelters.FirstOrDefaultAsync(p => p.ID == ToUpdate.ID);
+            shelter.Name = ToUpdate.Name;
+            shelter.Address = ToUpdate.Address;
+            shelter.ContactInfo = ToUpdate.ContactInfo;
+            shelter.AdministratorID = ToUpdate.AdministratorID;
+            await _context.SaveChangesAsync();
 
-
-            return ToUpdate;
+            return shelter;
         }
-
-
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.UpdateUser;
 using StrayHome.Domain.Entities;
@@ -13,18 +14,19 @@ namespace StrayHome.Application.Features.Commands.UpdateUserShopItem
 {
     public class UpdateUserShopItemCommandHandler : IRequestHandler<UpdateUserShopItemCommand, UserShopItem>
     {
-        private readonly IUserShopItemRepository _userShopItemRepository;
+        private readonly IStrayHomeContext _context;
         private readonly IMapper _mapper;
 
-        public UpdateUserShopItemCommandHandler(IUserShopItemRepository userShopItemRepository, IMapper mapper)
+        public UpdateUserShopItemCommandHandler(IStrayHomeContext context, IMapper mapper)
         {
-            _userShopItemRepository = userShopItemRepository;
+            _context = context;
             _mapper = mapper;
         }
 
         public async Task<UserShopItem> Handle(UpdateUserShopItemCommand request, CancellationToken cancellationToken)
         {
-            var toUpdate = await _userShopItemRepository.GetUserShopItemById(request.ID);
+            var toUpdate = await _context.UserShopItems.FirstAsync(p => p.ID == request.ID);
+
             if (toUpdate == null)
             {
                 throw new Exception();
@@ -42,10 +44,13 @@ namespace StrayHome.Application.Features.Commands.UpdateUserShopItem
                 }
             }
 
-            await _userShopItemRepository.UpdateUserShopItem(toUpdate);
+            var userShopItem = await _context.UserShopItems.FirstOrDefaultAsync(p => p.ID == toUpdate.ID);
+            userShopItem.UserID = toUpdate.UserID;
+            userShopItem.ShopItemID = toUpdate.ShopItemID;
+            userShopItem.OrderDate = toUpdate.OrderDate;
+            await _context.SaveChangesAsync();
 
-
-            return toUpdate;
+            return userShopItem;
         }
     }
 }
