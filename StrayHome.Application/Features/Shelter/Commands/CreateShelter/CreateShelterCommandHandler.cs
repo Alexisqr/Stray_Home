@@ -40,7 +40,6 @@ namespace StrayHome.Application.Features.Commands.CreateShelter
 
             };
             _context.Shelters.Add(shelter);
-
             var user = await _context.Users.FirstOrDefaultAsync(p => p.ID == request.AdministratorID);
             user.Role = UserRole.Admin;
 

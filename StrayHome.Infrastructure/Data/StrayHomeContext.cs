@@ -45,7 +45,7 @@ namespace StrayHome.Infrastructure.Data
             SaveChanges();
         }
 
-        public Task<int> SaveChangesAsync()
+        Task<int> IStrayHomeContext.SaveChangesAsync()
         {
             return SaveChangesAsync();
         }
