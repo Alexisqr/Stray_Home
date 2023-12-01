@@ -13,12 +13,10 @@ namespace StrayHome.Application.Features.Commands.CreateUser
 {
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, User>
     {
-        private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IStrayHomeContext _context;
-        public CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher, IStrayHomeContext context)
+        public CreateUserCommandHandler(IPasswordHasher passwordHasher, IStrayHomeContext context)
         {
-            _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _context = context;
         }
@@ -37,7 +35,9 @@ namespace StrayHome.Application.Features.Commands.CreateUser
                 CreationDate = DateTime.UtcNow,
             };
 
-            return await _userRepository.CreateUser(user);
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
         }
     }
 }

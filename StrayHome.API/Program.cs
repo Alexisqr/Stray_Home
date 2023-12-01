@@ -21,17 +21,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddDbContext<IStrayHomeContext, StrayHomeContext>(options =>
 {
     options.UseMySql(builder.Configuration.GetConnectionString("StrayHomeDbContext"),
         new MySqlServerVersion(new Version(8, 0, 32)));
 }
 );
-builder.Services.AddScoped<IShopltemRepository, ShopltemRepository>();
-builder.Services.AddScoped<IShelterRepository,ShelterRepository>();
-builder.Services.AddScoped<IUserAnimalRepository, UserAnimalRepository>();
-builder.Services.AddScoped<IUserShopItemRepository, UserShopItemRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddMediatR(typeof(CreateShopItemCommand));
 builder.Services.AddAutoMapper(typeof(MappingProfile));

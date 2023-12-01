@@ -1,30 +1,34 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.UpdateShopItem;
 using StrayHome.Domain.Entities;
+using StrayHome.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace StrayHome.Application.Features.Commands.UpdateUser
 {
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, User>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IStrayHomeContext _context;
         private readonly IMapper _mapper;
 
-        public UpdateUserCommandHandler(IUserRepository shopItemRepository, IMapper mapper)
+        public UpdateUserCommandHandler(IStrayHomeContext context, IMapper mapper)
         {
-            _userRepository = shopItemRepository;
+            _context = context;
             _mapper = mapper;
         }
 
         public async Task<User> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var toUpdate = await _userRepository.GetUserById(request.ID);
+            var toUpdate = await _context.Users.FirstAsync(p => p.ID == request.ID);
+
             if (toUpdate == null)
             {
                 throw new Exception();
@@ -42,8 +46,10 @@ namespace StrayHome.Application.Features.Commands.UpdateUser
                 }
             }
 
-            await _userRepository.UpdateUser(toUpdate);
-
+            var user = await _context.Users.FirstOrDefaultAsync(p => p.ID == toUpdate.ID);
+            user.Username = toUpdate.Username;
+            user.Email = toUpdate.Email;
+            await _context.SaveChangesAsync();
 
             return toUpdate;
         }

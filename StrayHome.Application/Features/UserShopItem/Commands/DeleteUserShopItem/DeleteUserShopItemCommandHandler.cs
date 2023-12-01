@@ -12,27 +12,27 @@ namespace StrayHome.Application.Features.Commands.DeleteUserShopItem
     public class DeleteUserShopItemCommandHandler : IRequestHandler<DeleteUserShopItemCommand>
     {
 
-        private readonly IUserShopItemRepository _userShopItemRepository;
+        private readonly IStrayHomeContext _context;
 
-    public DeleteUserShopItemCommandHandler(IUserShopItemRepository userShopItemRepository)
-    {
-        _userShopItemRepository = userShopItemRepository;
-    }
-
-    public async Task<Unit> Handle(DeleteUserShopItemCommand request, CancellationToken cancellationToken)
-    {
-
-        var toDelete = await _userShopItemRepository.GetUserShopItemById(request.ID);
-
-        if (toDelete == null)
+        public DeleteUserShopItemCommandHandler(IStrayHomeContext context)
         {
-            throw new Exception();
+            _context = context;
         }
 
-        await _userShopItemRepository.DeleteUserShopItem(toDelete.ID);
+        public async Task<Unit> Handle(DeleteUserShopItemCommand request, CancellationToken cancellationToken)
+        {
 
-        return Unit.Value;
-    }
+            var toDelete = await _userShopItemRepository.GetUserShopItemById(request.ID);
+
+            if (toDelete == null)
+            {
+                 throw new Exception();
+            }
+
+            await _userShopItemRepository.DeleteUserShopItem(toDelete.ID);
+
+            return Unit.Value;
+        }
 
     }
 }

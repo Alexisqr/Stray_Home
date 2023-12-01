@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.UpdateUser;
 using StrayHome.Domain.Entities;
@@ -13,18 +14,19 @@ namespace StrayHome.Application.Features.Commands.UpdateUserAnimal
 {
     public class UpdateUserAnimalCommandHandler : IRequestHandler<UpdateUserAnimalCommand, UserAnimal>
     {
-        private readonly IUserAnimalRepository _userAnimalRepository;
+        private readonly IStrayHomeContext _context;
         private readonly IMapper _mapper;
 
-        public UpdateUserAnimalCommandHandler(IUserAnimalRepository userAnimalRepository, IMapper mapper)
+        public UpdateUserAnimalCommandHandler(IStrayHomeContext context, IMapper mapper)
         {
-            _userAnimalRepository = userAnimalRepository;
+            _context = context;
             _mapper = mapper;
         }
 
         public async Task<UserAnimal> Handle(UpdateUserAnimalCommand request, CancellationToken cancellationToken)
         {
-            var toUpdate = await _userAnimalRepository.GetUserAnimalById(request.AnimalID);
+            var toUpdate = await  _context.UserAnimals.FirstAsync(p => p.AnimalID == request.AnimalID);
+
             if (toUpdate == null)
             {
                 throw new Exception();
@@ -42,11 +44,15 @@ namespace StrayHome.Application.Features.Commands.UpdateUserAnimal
                 }
             }
 
-            await _userAnimalRepository.UpdateUserAnimal(toUpdate);
+            var userAnimal = await _context.UserAnimals.FirstOrDefaultAsync(p => p.AnimalID == toUpdate.AnimalID);
+            userAnimal.UserID = toUpdate.UserID;
+            userAnimal.AnimalID = toUpdate.AnimalID;
+            userAnimal.SubmissionDate = toUpdate.SubmissionDate;
+            await _context.SaveChangesAsync();
 
+            return userAnimal;
 
             return toUpdate;
         }
     }
-
 }

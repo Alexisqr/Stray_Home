@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.CreateShopItem;
 using StrayHome.Domain.Entities;
@@ -14,25 +15,32 @@ namespace StrayHome.Application.Features.Commands.DeleteShopItem
     public class DeleteShopItemCommandHandler : IRequestHandler<DeleteShopItemCommand>
     {
 
-        private readonly IShopltemRepository _shopItemRepository;
+        private readonly IStrayHomeContext _context;
 
-        public DeleteShopItemCommandHandler(IShopltemRepository shopItemRepository)
+        public DeleteShopItemCommandHandler(IStrayHomeContext context)
         {
-            _shopItemRepository = shopItemRepository;
+            _context = context;
         }
        
         public async Task<Unit> Handle(DeleteShopItemCommand request, CancellationToken cancellationToken) 
         { 
 
-            var toDelete = await _shopItemRepository.GetShopItemById(request.ID);
+            var toDelete = await _context.ShopItems.FirstAsync(p => p.ID == request.ID);
 
             if (toDelete == null)
             {
-            throw new Exception();
+                throw new Exception();
             }
 
-            await _shopItemRepository.DeleteShopItem(toDelete.ID);
+            var shopItemUser = _context.UserShopItems.Where(a => a.ShopItemID == request.ID);
+            _context.UserShopItems.RemoveRange(shopItemUser);
 
+            var hopItem = _context.ShopItems
+                .FirstOrDefault(p => p.ID == toDelete.ID);
+
+            _context.ShopItems.Remove(hopItem);
+
+            await _context.SaveChangesAsync();
             return Unit.Value;
         }
 
