@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Featuresb.Commands.DeleteUser;
 using System;
@@ -22,14 +23,19 @@ namespace StrayHome.Application.Features.Commands.DeleteUserShopItem
         public async Task<Unit> Handle(DeleteUserShopItemCommand request, CancellationToken cancellationToken)
         {
 
-            var toDelete = await _userShopItemRepository.GetUserShopItemById(request.ID);
+            var toDelete = await _context.UserShopItems.FirstAsync(p => p.ID == request.ID);
 
             if (toDelete == null)
             {
-                 throw new Exception();
+                throw new Exception();
             }
 
-            await _userShopItemRepository.DeleteUserShopItem(toDelete.ID);
+            var hopItem = _context.UserShopItems
+             .FirstOrDefault(p => p.ID == toDelete.ID);
+
+            _context.UserShopItems.Remove(hopItem);
+
+            await _context.SaveChangesAsync();
 
             return Unit.Value;
         }

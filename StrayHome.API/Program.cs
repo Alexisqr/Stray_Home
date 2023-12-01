@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.CreateShopItem;
 using StrayHome.Infrastructure.Data;
-using StrayHome.Infrastructure.Repositories;
 using MediatR;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
