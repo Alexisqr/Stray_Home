@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StrayHome.Domain.DTO;
 using StrayHome.Domain.Entities;
 using StrayHome.Infrastructure.Data;
 using System.IdentityModel.Tokens.Jwt;
@@ -23,7 +24,7 @@ namespace StrayHome.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(User _userData)
+        public async Task<IActionResult> Post(UserDTO _userData)
         {
             if (_userData != null && _userData.Email != null && _userData.Password != null)
             {
