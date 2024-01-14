@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Domain.DTO;
 using StrayHome.Domain.Entities;
 using StrayHome.Infrastructure.Data;
@@ -15,12 +17,14 @@ namespace StrayHome.API.Controllers
     public class TokenController : ControllerBase
     {
         public IConfiguration _configuration;
+        private readonly IPasswordHasher _passwordHasher;
         private readonly StrayHomeContext _context;
 
-        public TokenController(IConfiguration config, StrayHomeContext context)
+        public TokenController(IConfiguration config, StrayHomeContext context , IPasswordHasher passwordHasher)
         {
             _configuration = config;
             _context = context;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpPost]
@@ -66,7 +70,24 @@ namespace StrayHome.API.Controllers
 
         private async Task<User> GetUser(string email, string password)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+            var user = await _context.Users
+       .Where(u => u.Email == email)
+       .Select(u => new { u.Password, u.Salt })
+       .FirstOrDefaultAsync();
+
+            if (user != null)
+            {
+                byte[] salt = Convert.FromBase64String(user.Salt);
+                var verify = _passwordHasher.Verify(password, user.Password ,salt);
+
+                if (verify)
+                {
+                    return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+                }
+            }
+
+            return default;
+
         }
     }
 }
