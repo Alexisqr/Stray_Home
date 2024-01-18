@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using StrayHome.Application.Features.Commands.CreateShopItem;
@@ -57,6 +58,7 @@ namespace StrayHome.API.Controllers
         }
 
         // testing purpose
+        [Authorize(Policy = "Admin")]
         [HttpPost(Name = "CreateShopItem")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<int>> CreateShopItem([FromBody] CreateShopItemCommand command)

@@ -30,7 +30,7 @@ namespace StrayHome.Application.Features.Commands.CreateUser
                 Username = request.Username,
                 Password = password,
                 Salt = Convert.ToBase64String(salt),
-                Role = UserRole.User,
+                Role = UserRole.Admin,
                 Email = request.Email,
                 CreationDate = DateTime.UtcNow,
             };

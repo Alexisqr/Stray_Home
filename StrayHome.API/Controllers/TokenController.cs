@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StrayHome.API.Authorization;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Domain.DTO;
 using StrayHome.Domain.Entities;
@@ -43,7 +44,8 @@ namespace StrayHome.API.Controllers
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                         new Claim("UserId", user.ID.ToString()),                        
                         new Claim("UserName", user.Username),
-                        new Claim("Email", user.Email)
+                        new Claim("Email", user.Email),
+                        new Claim(CustomClaimTypes.IS_ADMIN, user.Role.ToString())
                     };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

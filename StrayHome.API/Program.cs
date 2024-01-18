@@ -11,6 +11,8 @@ using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using StrayHome.Application.Mappings;
 using StrayHome.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
+using StrayHome.API.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,7 @@ builder.Services.AddDbContext<IStrayHomeContext, StrayHomeContext>(options =>
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddMediatR(typeof(CreateShopItemCommand));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddSingleton<IAuthorizationHandler, AdminRequirementAuthorizationHandler>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
@@ -42,7 +45,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy =>
+    {
+        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+        policy.RequireAuthenticatedUser();
+        policy.Requirements.Add(new AdminRequirement());
+    });
+    options.AddPolicy("AdminShelter", policy =>
+    {
+        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+        policy.RequireAuthenticatedUser();
+        policy.Requirements.Add(new AdminSelterRequirement());
+    });
+});
 
 var app = builder.Build();
 

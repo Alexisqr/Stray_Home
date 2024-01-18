@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StrayHome.Application.Features.Commands.CreateAnimal;
 using StrayHome.Application.Features.Commands.CreateUserShopItem;
@@ -57,7 +58,8 @@ namespace StrayHome.API.Controllers
         return NoContent();
     }
 
-    // testing purpose
+        // testing purpose
+
     [HttpPost(Name = "CreateUserShopItem")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<int>> CreateUserShopItem([FromBody] CreateUserShopItemCommand command)
