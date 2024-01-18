@@ -1,6 +1,9 @@
 ﻿namespace StrayHome.API.Authorization
 {
-    public class CustomClaimTypes
+    public static class CustomClaimTypes
     {
+        public const string IS_ADMIN = "Admin";
+        public const string IS_ADMIN_SHELTER = "AdminShelter";
     }
+
 }

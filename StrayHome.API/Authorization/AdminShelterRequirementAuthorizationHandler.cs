@@ -7,7 +7,7 @@ namespace StrayHome.API.Authorization
     {
         protected override Task HandleRequirementAsync(
             AuthorizationHandlerContext context,
-            AdminRequirement requirement)
+            AdminRequirement requirement )
         {
             if (!context.User.HasClaim(x => x.Type == CustomClaimTypes.IS_ADMIN_SHELTER))
                 return Task.CompletedTask;

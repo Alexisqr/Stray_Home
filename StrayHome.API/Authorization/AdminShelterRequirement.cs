@@ -1,6 +1,11 @@
-﻿namespace StrayHome.API.Authorization
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace StrayHome.API.Authorization
 {
-    public class AdminShelterRequirement
+    public class AdminShelterRequirement : IAuthorizationRequirement
     {
+        public AdminShelterRequirement()
+        {
+        }
     }
 }

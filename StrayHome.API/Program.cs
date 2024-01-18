@@ -32,6 +32,7 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddMediatR(typeof(CreateShopItemCommand));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddSingleton<IAuthorizationHandler, AdminRequirementAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, AdminShelterRequirementAuthorizationHandler>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
@@ -57,7 +58,7 @@ builder.Services.AddAuthorization(options =>
     {
         policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
-        policy.Requirements.Add(new AdminSelterRequirement());
+        policy.Requirements.Add(new AdminShelterRequirement());
     });
 });
 
