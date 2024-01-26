@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace StrayHome.API.Authorization
+namespace StrayHome.Infrastructure.Authorization
 {
-   public class AdminShelterRequirementAuthorizationHandler
+    public class AdminShelterRequirementAuthorizationHandler
         : AuthorizationHandler<AdminRequirement>
     {
         protected override Task HandleRequirementAsync(

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace StrayHome.API.Authorization
+namespace StrayHome.Infrastructure.Authorization
 {
     public class AdminRequirement : IAuthorizationRequirement
     {

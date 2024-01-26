@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Hosting;
 using StrayHome.Application.Mappings;
 using StrayHome.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
-using StrayHome.API.Authorization;
+
+using StrayHome.Infrastructure.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 

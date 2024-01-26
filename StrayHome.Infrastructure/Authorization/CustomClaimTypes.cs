@@ -1,4 +1,4 @@
-﻿namespace StrayHome.API.Authorization
+﻿namespace StrayHome.Infrastructure.Authorization
 {
     public static class CustomClaimTypes
     {

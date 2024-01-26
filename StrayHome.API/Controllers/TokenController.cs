@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using StrayHome.API.Authorization;
+
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Domain.DTO;
 using StrayHome.Domain.Entities;
+using StrayHome.Infrastructure.Authorization;
 using StrayHome.Infrastructure.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
