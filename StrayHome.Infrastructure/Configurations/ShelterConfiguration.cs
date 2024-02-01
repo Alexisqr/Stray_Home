@@ -17,9 +17,7 @@ namespace StrayHome.Infrastructure.Configurations
             builder.Property(s => s.Name).IsRequired();
             builder.Property(s => s.Address);
             builder.Property(s => s.ContactInfo);
-            builder.HasOne(s => s.Administrator)
-                .WithMany()
-                .HasForeignKey(s => s.AdministratorID);
+           
         }
     }
 }

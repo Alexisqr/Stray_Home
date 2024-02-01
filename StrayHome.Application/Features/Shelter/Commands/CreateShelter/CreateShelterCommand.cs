@@ -14,6 +14,5 @@ namespace StrayHome.Application.Features.Commands.CreateShelter
         public string Address { get; set; }
         public string ContactInfo { get; set; }
 
-        public Guid AdministratorID { get; set; }
     }
 }

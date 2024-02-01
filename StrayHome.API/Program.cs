@@ -14,6 +14,7 @@ using StrayHome.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 
 using StrayHome.Infrastructure.Authorization;
+using StrayHome.API.HostedService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +64,7 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+builder.Services.AddHostedService<MigrationHostedService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
