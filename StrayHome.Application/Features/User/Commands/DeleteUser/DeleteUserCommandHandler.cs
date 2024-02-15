@@ -38,10 +38,10 @@ namespace StrayHome.Application.Features.Commands.DeleteUser
             var userShopItem = _context.UserShopItems.Where(a => a.UserID == request.ID);
             _context.UserShopItems.RemoveRange(userShopItem);
 
-            if (toDelete.Role == UserRole.Admin)
-            {
-                throw new Exception($"It is not possible to delete a user who is the administrator of the shelter");
-            }
+            //if (toDelete.Role == UserRole.Admin)
+            //{
+            //    throw new Exception($"It is not possible to delete a user who is the administrator of the shelter");
+            //}
 
             var hopItem = _context.Users
                 .FirstOrDefault(p => p.ID == toDelete.ID);
