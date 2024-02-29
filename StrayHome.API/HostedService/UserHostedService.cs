@@ -16,8 +16,8 @@ namespace StrayHome.API.HostedService
     {
         public IConfiguration _configuration;
         private readonly IServiceProvider _serviceProvider;
-        // private readonly IPasswordHasher _passwordHasher;
-        public UserHostedService(IConfiguration configuration, IServiceProvider serviceProvider, IPasswordHasher passwordHasher)
+        
+        public UserHostedService(IConfiguration configuration, IServiceProvider serviceProvider)
         {
             _configuration = configuration;
             _serviceProvider = serviceProvider;
