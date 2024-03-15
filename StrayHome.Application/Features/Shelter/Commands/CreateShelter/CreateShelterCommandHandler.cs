@@ -25,23 +25,22 @@ namespace StrayHome.Application.Features.Commands.CreateShelter
 
         public async Task<Shelter> Handle(CreateShelterCommand request, CancellationToken cancellationToken)
         {
-            var administratorExists = await _context.Users.AnyAsync(s => s.ID == request.AdministratorID);
-            if (!administratorExists)
-            {
-                throw new Exception($"User with ID {request.AdministratorID} not found");
-            }
+            //var administratorExists = await _context.Users.AnyAsync(s => s.ID == request.AdministratorID);
+            //if (!administratorExists)
+            //{
+            //    throw new Exception($"User with ID {request.AdministratorID} not found");
+            //}
 
             var shelter = new Shelter
             {
                 Name = request.Name,
                 Address = request.Address,
-                ContactInfo = request.ContactInfo,
-                AdministratorID = request.AdministratorID,
+                ContactInfo = request.ContactInfo             
 
             };
             _context.Shelters.Add(shelter);
-            var user = await _context.Users.FirstOrDefaultAsync(p => p.ID == request.AdministratorID);
-            user.Role = UserRole.Admin;
+            //var user = await _context.Users.FirstOrDefaultAsync(p => p.ID == request.AdministratorID);
+            //user.Role = UserRole.Admin;
 
             await _context.SaveChangesAsync();
 

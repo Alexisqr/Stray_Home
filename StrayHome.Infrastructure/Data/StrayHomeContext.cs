@@ -20,6 +20,7 @@ namespace StrayHome.Infrastructure.Data
         public DbSet<UserAnimal> UserAnimals { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Shelter> Shelters { get; set; }
+        public DbSet<ShelterAdmin> ShelterAdmins { get; set; }
 
         public StrayHomeContext(DbContextOptions<StrayHomeContext> options)
       : base(options)
@@ -37,6 +38,7 @@ namespace StrayHome.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new UserShopItemConfiguration());
             modelBuilder.ApplyConfiguration(new UserAnimalConfiguration());
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
+            modelBuilder.ApplyConfiguration(new ShelterAdminConfiguration());
 
         }
 

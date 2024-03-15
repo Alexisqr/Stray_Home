@@ -8,7 +8,7 @@ namespace StrayHome.Domain.Enums
 {
     public enum UserRole
     {
-        Shelter,        
+        AdminShelter,        
         Admin,
         User
     }

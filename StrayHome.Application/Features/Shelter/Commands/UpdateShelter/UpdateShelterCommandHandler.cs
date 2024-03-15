@@ -30,12 +30,12 @@ namespace StrayHome.Application.Features.Commands.UpdateShelter
             {
                 throw new Exception();
             }
-            var administratorExists = await _context.Users.AnyAsync(s => s.ID == ToUpdate.AdministratorID);
+            //var administratorExists = await _context.Users.AnyAsync(s => s.ID == ToUpdate.AdministratorID);
 
-            if (!administratorExists)
-            {
-                throw new Exception($"User with ID {ToUpdate.AdministratorID} not found");
-            }
+            //if (!administratorExists)
+            //{
+            //    throw new Exception($"User with ID {ToUpdate.AdministratorID} not found");
+            //}
             var propertiesToUpdate = typeof(UpdateShelterCommand).GetProperties();
 
             foreach (var property in propertiesToUpdate)
@@ -52,7 +52,6 @@ namespace StrayHome.Application.Features.Commands.UpdateShelter
             shelter.Name = ToUpdate.Name;
             shelter.Address = ToUpdate.Address;
             shelter.ContactInfo = ToUpdate.ContactInfo;
-            shelter.AdministratorID = ToUpdate.AdministratorID;
             await _context.SaveChangesAsync();
 
             return shelter;

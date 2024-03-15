@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using StrayHome.Application.Features.Commands.CreateShopItem;
@@ -15,12 +16,13 @@ namespace StrayHome.API.Controllers
     [Route("api/v1/[controller]")]
     public class ShopItemControllers : ControllerBase
     {
-
         private readonly IMediator _mediator;
-  
-        public ShopItemControllers(IMediator mediator)
+        private IMemoryCache _cache;
+
+        public ShopItemControllers(IMediator mediator, IMemoryCache cache)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _cache = cache;
         }
         [HttpGet(Name = "GetAllShopItem")]
         public async Task<ActionResult<IEnumerable<ShopItem>>> GetAllShopItem()
@@ -32,8 +34,17 @@ namespace StrayHome.API.Controllers
         [HttpGet("{id}", Name = "GetByIdShopItem")]
         public async Task<ActionResult<ShopItem>> GetShopItemById(Guid id)
         {
+            var cacheKey = $"ShopItem_{id}";
             var command = new GetByIdShopItemQuery() { ID = id };
-            var shopItem = await _mediator.Send(command);
+
+            if (!_cache.TryGetValue(cacheKey, out ShopItem shopItem))
+            {
+                shopItem = await _mediator.Send(command);
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                   .SetSlidingExpiration(TimeSpan.FromMinutes(5));
+
+                _cache.Set(cacheKey, shopItem, cacheEntryOptions);
+            }
             return Ok(shopItem);
         }
         [HttpDelete("{id}", Name = "DeleteShopItem")]
@@ -57,6 +68,7 @@ namespace StrayHome.API.Controllers
         }
 
         // testing purpose
+        [Authorize(Policy = "Admin")]
         [HttpPost(Name = "CreateShopItem")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<int>> CreateShopItem([FromBody] CreateShopItemCommand command)

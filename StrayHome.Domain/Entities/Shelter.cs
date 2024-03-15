@@ -13,7 +13,6 @@ namespace StrayHome.Domain.Entities
         public string Address { get; set; }
         public string ContactInfo { get; set; }
 
-        public Guid AdministratorID { get; set; }
-        public User Administrator { get; set; }
+
     }
 }
