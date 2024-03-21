@@ -42,6 +42,7 @@ namespace StrayHome.Application.Features.Commands.AddListOfAnimals
                 };
 
                 _context.Animals.Add(animalCreate);
+                resultAnimals.Add(animalCreate);
             }
 
             await _context.SaveChangesAsync();
