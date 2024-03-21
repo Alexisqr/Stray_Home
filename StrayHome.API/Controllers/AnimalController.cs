@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using StrayHome.Application.Features.Commands.AddListOfAnimals;
 using StrayHome.Application.Features.Commands.CreateAnimal;
 using StrayHome.Application.Features.Commands.CreateShopItem;
 using StrayHome.Application.Features.Commands.DeleteAnimal;
@@ -64,6 +65,14 @@ namespace StrayHome.API.Controllers
         [HttpPost(Name = "CreateAnimal")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<int>> CreateAnimal([FromBody] CreateAnimalCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpPost("AddListOfAnimals", Name = "AddListOfAnimals")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult<int>> AddListOfAnimals([FromBody] AddListOfAnimalsCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
