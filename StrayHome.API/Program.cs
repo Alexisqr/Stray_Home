@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using StrayHome.Infrastructure.Authorization;
 using StrayHome.API.HostedService;
+using StrayHome.Infrastructure.ExcelService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,7 +64,7 @@ builder.Services.AddAuthorization(options =>
         policy.Requirements.Add(new AdminShelterRequirement());
     });
 });
-
+builder.Services.AddScoped<IExcelProcessingService, ExcelProcessingService>();
 builder.Services.AddHostedService<MigrationHostedService>();
 builder.Services.AddHostedService<UserHostedService>();
 builder.Services.AddMemoryCache();

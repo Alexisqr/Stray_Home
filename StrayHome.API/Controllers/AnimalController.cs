@@ -12,6 +12,7 @@ using StrayHome.Application.Features.Queries.GetAllShopItem;
 using StrayHome.Application.Features.Queries.GetByIdAnimal;
 using StrayHome.Application.Features.Queries.GetShopItemById;
 using StrayHome.Domain.Entities;
+using StrayHome.Infrastructure.ExcelService;
 using System.Net;
 
 namespace StrayHome.API.Controllers
@@ -22,10 +23,12 @@ namespace StrayHome.API.Controllers
     {
 
         private readonly IMediator _mediator;
+        private readonly IExcelProcessingService _excelProcessingService;
 
-        public AnimalController(IMediator mediator)
+       public AnimalController(IMediator mediator, IExcelProcessingService excelProcessingService)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _excelProcessingService = excelProcessingService;
         }
         [HttpGet(Name = "GetAllAnimal")]
         public async Task<ActionResult<IEnumerable<Animal>>> GetAllAnimal()
@@ -72,10 +75,11 @@ namespace StrayHome.API.Controllers
 
         [HttpPost("AddListOfAnimals", Name = "AddListOfAnimals")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<ActionResult<int>> AddListOfAnimals([FromBody] AddListOfAnimalsCommand command)
+        public async Task<ActionResult<int>> AddListOfAnimals(IFormFile file)
         {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            var data = _excelProcessingService.ReadExcel(file);
+          //  var result = await _mediator.Send(command);
+            return Ok();
         }
     }
 }
