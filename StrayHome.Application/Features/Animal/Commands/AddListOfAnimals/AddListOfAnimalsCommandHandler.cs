@@ -24,12 +24,15 @@ namespace StrayHome.Application.Features.Commands.AddListOfAnimals
         public async Task<IEnumerable<Animal>> Handle(AddListOfAnimalsCommand request, CancellationToken cancellationToken)
         {
             var resultAnimals = new List<Animal>();
+            var shelterAdmins = await _context.ShelterAdmins.FirstAsync(p => p.AdministratorID == request.ID);
+
+
             foreach (var animal in request.Animals)
             {
-                var shelterExists = await _context.Shelters.AnyAsync(s => s.ID == animal.ShelterID);
+                var shelterExists = await _context.Shelters.AnyAsync(s => s.ID == shelterAdmins.ShelterID);
                 if (!shelterExists)
                 {
-                    throw new Exception($"Shelter with ID {animal.ShelterID} not found");
+                    throw new Exception($"Shelter with ID {shelterAdmins.ShelterID} not found");
                 }
                 var animalCreate = new Animal
                 {
@@ -37,7 +40,7 @@ namespace StrayHome.Application.Features.Commands.AddListOfAnimals
                     Description = animal.Description,
                     Photos = animal.Photos,
                     IsAvailableForAdoption = animal.IsAvailableForAdoption,
-                    ShelterID = animal.ShelterID,
+                    ShelterID = shelterAdmins.ShelterID,
 
                 };
 

@@ -12,6 +12,7 @@ namespace StrayHome.Application.Features.Commands.AddListOfAnimals
     public class AddListOfAnimalsCommand : IRequest<IEnumerable<Animal>>
     {
        public IEnumerable<AnimalDto> Animals { get; set; }
-        
+       public Guid ID { get; set; }
+
     }
 }

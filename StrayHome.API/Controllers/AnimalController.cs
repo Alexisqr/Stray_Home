@@ -11,6 +11,7 @@ using StrayHome.Application.Features.Queries.GetAllAnimal;
 using StrayHome.Application.Features.Queries.GetAllShopItem;
 using StrayHome.Application.Features.Queries.GetByIdAnimal;
 using StrayHome.Application.Features.Queries.GetShopItemById;
+using StrayHome.Domain.DTO;
 using StrayHome.Domain.Entities;
 using StrayHome.Infrastructure.ExcelService;
 using System.Net;
@@ -74,12 +75,32 @@ namespace StrayHome.API.Controllers
         }
 
         [HttpPost("AddListOfAnimals", Name = "AddListOfAnimals")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<ActionResult<int>> AddListOfAnimals(IFormFile file)
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<ActionResult<int>> AddListOfAnimals(IFormFile file, Guid id)
         {
             var data = _excelProcessingService.ReadExcel(file);
-          //  var result = await _mediator.Send(command);
-            return Ok();
+            User
+            var animalList = new List<AnimalDto>();
+            for (int i = 1; i < data.GetLength(0); i++)
+            {
+                var animal = new AnimalDto
+                {
+                    Name = data[i, 0],
+                    Description = data[i, 1],
+                    Photos = data[i, 2],
+                    IsAvailableForAdoption = data[i, 3] == "1" ? true : false
+                };
+
+                animalList.Add(animal);
+            }
+            var command = new AddListOfAnimalsCommand
+            {
+                Animals = animalList,
+                ID = id
+            };
+
+            var result = await _mediator.Send(command);
+            return NoContent();
         }
     }
 }

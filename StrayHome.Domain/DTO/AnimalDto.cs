@@ -12,6 +12,5 @@ namespace StrayHome.Domain.DTO
         public string Description { get; set; }
         public string Photos { get; set; }
         public bool IsAvailableForAdoption { get; set; }
-        public Guid ShelterID { get; set; }
     }
 }
