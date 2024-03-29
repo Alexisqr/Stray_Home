@@ -15,19 +15,34 @@ namespace StrayHome.Application.Features.Commands.AddListOfAnimals
     public class AddListOfAnimalsCommandHandler : IRequestHandler<AddListOfAnimalsCommand, IEnumerable<Animal>>
     {
         private readonly IStrayHomeContext _context;
-
-        public AddListOfAnimalsCommandHandler(IStrayHomeContext context)
+        private readonly IExcelProcessingService _excelProcessingService;
+        public AddListOfAnimalsCommandHandler(IStrayHomeContext context, IExcelProcessingService excelProcessingService)
         {
             _context = context;
+            _excelProcessingService = excelProcessingService;
         }
 
         public async Task<IEnumerable<Animal>> Handle(AddListOfAnimalsCommand request, CancellationToken cancellationToken)
         {
+            var data = _excelProcessingService.ReadExcel(request.File);
+            var animalList = new List<AnimalDto>();
+            for (int i = 1; i < data.GetLength(0); i++)
+            {
+                var animal = new AnimalDto
+                {
+                    Name = data[i, 0],
+                    Description = data[i, 1],
+                    Photos = data[i, 2],
+                    IsAvailableForAdoption = data[i, 3] == "1" ? true : false
+                };
+
+                animalList.Add(animal);
+            }
             var resultAnimals = new List<Animal>();
             var shelterAdmins = await _context.ShelterAdmins.FirstAsync(p => p.AdministratorID == request.ID);
 
 
-            foreach (var animal in request.Animals)
+            foreach (var animal in animalList)
             {
                 var shelterExists = await _context.Shelters.AnyAsync(s => s.ID == shelterAdmins.ShelterID);
                 if (!shelterExists)

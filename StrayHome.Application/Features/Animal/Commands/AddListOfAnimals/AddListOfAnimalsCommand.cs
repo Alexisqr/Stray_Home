@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using StrayHome.Domain.DTO;
 using StrayHome.Domain.Entities;
 using System;
@@ -11,8 +12,8 @@ namespace StrayHome.Application.Features.Commands.AddListOfAnimals
 {
     public class AddListOfAnimalsCommand : IRequest<IEnumerable<Animal>>
     {
-       public IEnumerable<AnimalDto> Animals { get; set; }
        public Guid ID { get; set; }
+       public IFormFile File { get; set; }
 
     }
 }
