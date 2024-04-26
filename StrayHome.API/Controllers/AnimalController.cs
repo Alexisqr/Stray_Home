@@ -1,20 +1,16 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using StrayHome.Application.Features.Commands.AddListOfAnimals;
 using StrayHome.Application.Features.Commands.CreateAnimal;
 using StrayHome.Application.Features.Commands.CreateShopItem;
 using StrayHome.Application.Features.Commands.DeleteAnimal;
 using StrayHome.Application.Features.Commands.DeleteShopItem;
-using StrayHome.Application.Features.Commands.GetAnimalInExcel;
 using StrayHome.Application.Features.Commands.UpdateAnimal;
 using StrayHome.Application.Features.Commands.UpdateShopItem;
 using StrayHome.Application.Features.Queries.GetAllAnimal;
 using StrayHome.Application.Features.Queries.GetAllShopItem;
 using StrayHome.Application.Features.Queries.GetByIdAnimal;
 using StrayHome.Application.Features.Queries.GetShopItemById;
-using StrayHome.Domain.DTO;
 using StrayHome.Domain.Entities;
-using StrayHome.Infrastructure.ExcelService;
 using System.Net;
 
 namespace StrayHome.API.Controllers
@@ -25,10 +21,10 @@ namespace StrayHome.API.Controllers
     {
 
         private readonly IMediator _mediator;
-       public AnimalController(IMediator mediator)
+
+        public AnimalController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            
         }
         [HttpGet(Name = "GetAllAnimal")]
         public async Task<ActionResult<IEnumerable<Animal>>> GetAllAnimal()
@@ -71,40 +67,6 @@ namespace StrayHome.API.Controllers
         {
             var result = await _mediator.Send(command);
             return Ok(result);
-        }
-
-        [HttpPost("AddListOfAnimals", Name = "AddListOfAnimals")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<ActionResult<int>> AddListOfAnimals(IFormFile file, Guid id)
-        {
-            
-            //User
-
-            // тут треба реалізувати або захешувати id юзера
-         
-            var command = new AddListOfAnimalsCommand
-            {
-                ID = id,
-                File = file
-            };
-            var result = await _mediator.Send(command);
-            return NoContent();
-        }
-        [HttpPost("GetAnimalsInExcel", Name = "GetAnimalsInExcel")]
-      
-        public async Task<ActionResult> GetAnimalsInExcel(Guid id)
-        {
-
-            //User
-
-            // тут треба реалізувати або захешувати id юзера
-
-            var command = new GetAnimalsInExcelCommand
-            {
-                ID = id
-            };
-            var result = await _mediator.Send(command);
-            return result;
         }
     }
 }

@@ -19,8 +19,6 @@ namespace StrayHome.Application.Contracts.Persistence
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Shelter> Shelters { get; set; }
         public DbSet<ShelterAdmin> ShelterAdmins { get; set; }
-        public DbSet<MissingAnimal> MissingAnimals { get; set; }
-        
 
         /// <summary>
         /// Saves changes.
