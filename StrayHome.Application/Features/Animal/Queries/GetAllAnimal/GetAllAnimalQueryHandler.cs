@@ -14,7 +14,7 @@ namespace StrayHome.Application.Features.Queries.GetAllAnimal
     public class GetAllAnimalQueryHandler : IRequestHandler<GetAllAnimalQuery, IEnumerable<Animal>>
     {
         private readonly IStrayHomeContext _context;
-
+        
         public GetAllAnimalQueryHandler(IStrayHomeContext context)
         {
             _context = context;     

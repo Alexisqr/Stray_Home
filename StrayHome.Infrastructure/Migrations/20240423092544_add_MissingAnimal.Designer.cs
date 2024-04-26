@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StrayHome.Infrastructure.Data;
 
@@ -10,9 +11,11 @@ using StrayHome.Infrastructure.Data;
 namespace StrayHome.Infrastructure.Migrations
 {
     [DbContext(typeof(StrayHomeContext))]
-    partial class StrayHomeContextModelSnapshot : ModelSnapshot
+    [Migration("20240423092544_add_MissingAnimal")]
+    partial class add_MissingAnimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,7 +50,7 @@ namespace StrayHome.Infrastructure.Migrations
 
                     b.HasIndex("ShelterID");
 
-                    b.ToTable("Animals", (string)null);
+                    b.ToTable("Animals");
                 });
 
             modelBuilder.Entity("StrayHome.Domain.Entities.Comment", b =>
@@ -75,7 +78,7 @@ namespace StrayHome.Infrastructure.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("StrayHome.Domain.Entities.MissingAnimal", b =>
@@ -89,15 +92,10 @@ namespace StrayHome.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ImageLink")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Link")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Location")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
@@ -111,7 +109,7 @@ namespace StrayHome.Infrastructure.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("MissingAnimals", (string)null);
+                    b.ToTable("MissingAnimals");
                 });
 
             modelBuilder.Entity("StrayHome.Domain.Entities.News", b =>
@@ -138,7 +136,7 @@ namespace StrayHome.Infrastructure.Migrations
 
                     b.HasIndex("ShelterID");
 
-                    b.ToTable("News", (string)null);
+                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("StrayHome.Domain.Entities.Shelter", b =>
@@ -161,7 +159,7 @@ namespace StrayHome.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Shelters", (string)null);
+                    b.ToTable("Shelters");
                 });
 
             modelBuilder.Entity("StrayHome.Domain.Entities.ShelterAdmin", b =>
@@ -182,7 +180,7 @@ namespace StrayHome.Infrastructure.Migrations
 
                     b.HasIndex("ShelterID");
 
-                    b.ToTable("ShelterAdmins", (string)null);
+                    b.ToTable("ShelterAdmins");
                 });
 
             modelBuilder.Entity("StrayHome.Domain.Entities.ShopItem", b =>
@@ -211,7 +209,7 @@ namespace StrayHome.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("ShopItems", (string)null);
+                    b.ToTable("ShopItems");
                 });
 
             modelBuilder.Entity("StrayHome.Domain.Entities.User", b =>
@@ -245,7 +243,7 @@ namespace StrayHome.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("StrayHome.Domain.Entities.UserAnimal", b =>
@@ -263,7 +261,7 @@ namespace StrayHome.Infrastructure.Migrations
 
                     b.HasIndex("AnimalID");
 
-                    b.ToTable("UserAnimals", (string)null);
+                    b.ToTable("UserAnimals");
                 });
 
             modelBuilder.Entity("StrayHome.Domain.Entities.UserShopItem", b =>
@@ -287,7 +285,7 @@ namespace StrayHome.Infrastructure.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserShopItems", (string)null);
+                    b.ToTable("UserShopItems");
                 });
 
             modelBuilder.Entity("StrayHome.Domain.Entities.Animal", b =>
