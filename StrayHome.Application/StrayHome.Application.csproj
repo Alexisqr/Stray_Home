@@ -19,4 +19,11 @@
     <ProjectReference Include="..\StrayHome.Domain\StrayHome.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\MissingAnimal\Commands\DeleteMissingAnimal\" />
+    <Folder Include="Features\MissingAnimal\Commands\UpdateMissingAnimal\" />
+    <Folder Include="Features\MissingAnimal\Queries\GetAllMissingAnimal\" />
+    <Folder Include="Features\MissingAnimal\Queries\GetByIdMissingAnimal\" />
+  </ItemGroup>
+
 </Project>
