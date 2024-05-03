@@ -13,6 +13,7 @@ namespace StrayHome.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<News> builder)
         {
+
             builder.HasKey(n => n.ID);
             builder.Property(n => n.Title).IsRequired();
             builder.Property(n => n.Text);
