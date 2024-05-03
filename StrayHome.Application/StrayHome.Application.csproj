@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -10,11 +10,20 @@
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="FluentValidation" Version="11.8.0" />
     <PackageReference Include="MediatR" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\StrayHome.Domain\StrayHome.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\MissingAnimal\Commands\DeleteMissingAnimal\" />
+    <Folder Include="Features\MissingAnimal\Commands\UpdateMissingAnimal\" />
+    <Folder Include="Features\MissingAnimal\Queries\GetAllMissingAnimal\" />
+    <Folder Include="Features\MissingAnimal\Queries\GetByIdMissingAnimal\" />
   </ItemGroup>
 
 </Project>
