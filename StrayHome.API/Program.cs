@@ -12,11 +12,15 @@ using Microsoft.AspNetCore.Hosting;
 using StrayHome.Application.Mappings;
 using StrayHome.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
-
+using Quartz;
 using StrayHome.Infrastructure.Authorization;
 using StrayHome.API.HostedService;
 using StrayHome.Infrastructure.ExcelService;
 using StrayHome.Infrastructure.SeleniumService;
+using Quartz.Impl;
+using Quartz.Spi;
+using StrayHome.Infrastructure.Jobs;
+using StrayHome.Infrastructure.QuartzHostedService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +69,14 @@ builder.Services.AddAuthorization(options =>
         policy.Requirements.Add(new AdminShelterRequirement());
     });
 });
+builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+builder.Services.AddSingleton<UpdateListOfMissingAnimals>();
+builder.Services.AddSingleton<IScheduler>(provider =>
+{
+    var schedulerFactory = provider.GetRequiredService<ISchedulerFactory>();
+    return schedulerFactory.GetScheduler().Result;
+});
+builder.Services.AddHostedService<StrayHome.Infrastructure.QuartzHostedService.QuartzHostedService>();
 builder.Services.AddScoped<IExcelProcessingService, ExcelProcessingService>();
 builder.Services.AddScoped<ISeleniumService, SeleniumService>();
 builder.Services.AddHostedService<MigrationHostedService>();
