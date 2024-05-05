@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StrayHome.Infrastructure.Data;
 
@@ -10,9 +11,11 @@ using StrayHome.Infrastructure.Data;
 namespace StrayHome.Infrastructure.Migrations
 {
     [DbContext(typeof(StrayHomeContext))]
-    partial class StrayHomeContextModelSnapshot : ModelSnapshot
+    [Migration("20240504201518_add_new_item_for_Animal")]
+    partial class add_new_item_for_Animal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
