@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StrayHome.Domain.Entities;
+using StrayHome.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,11 @@ namespace StrayHome.Application.Features.Commands.CreateAnimal
         public string Photos { get; set; }
         public bool IsAvailableForAdoption { get; set; }
 
+        public string Location { get; set; }
+        public string TypeAnimal { get; set; }
+        public string Sex { get; set; }
+        public double Age { get; set; }
+        public bool Sterilization { get; set; }
         public Guid ShelterID { get; set; }
     }
 }

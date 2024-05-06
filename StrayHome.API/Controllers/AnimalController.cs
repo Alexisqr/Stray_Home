@@ -10,6 +10,8 @@ using StrayHome.Application.Features.Queries.GetByIdAnimal;
 using StrayHome.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using System.Net;
+using StrayHome.Application.Features.Queries.GetByFilterAnimal;
+using StrayHome.Domain.Enums;
 
 namespace StrayHome.API.Controllers
 {
@@ -28,6 +30,13 @@ namespace StrayHome.API.Controllers
         public async Task<ActionResult<IEnumerable<Animal>>> GetAllAnimal()
         {
             var command = new GetAllAnimalQuery();
+            var animals = await _mediator.Send(command);
+            return Ok(animals);
+        }
+        [HttpGet("GetByFilterAnimal")]
+        public async Task<ActionResult<IEnumerable<Animal>>> GetByFilterAnimal(string? location,string? sex,double? age,bool? sterilization,string? typeAnimal,string? shelter)
+        {
+            var command = new GetByFilterAnimalQuery() { Location =location, Sex = sex, Age = age , Sterilization = sterilization, TypeAnimal = typeAnimal ,Shelter = shelter };
             var animals = await _mediator.Send(command);
             return Ok(animals);
         }

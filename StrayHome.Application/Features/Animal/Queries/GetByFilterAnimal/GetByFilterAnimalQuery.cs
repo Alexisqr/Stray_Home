@@ -11,10 +11,11 @@ namespace StrayHome.Application.Features.Queries.GetByFilterAnimal
 {
     public class GetByFilterAnimalQuery : IRequest<IEnumerable<Animal>>
     {
-        public string Location { get; set; }
-        public TypeAnimal TypeAnimal { get; set; }
-        public GenderAnimal Sex { get; set; }
-        public double Age { get; set; }
-        public bool Sterilization { get; set; }
+        public string? Location { get; set; }
+        public string? TypeAnimal { get; set; }
+        public string? Sex { get; set; }
+        public double? Age { get; set; }
+        public bool? Sterilization { get; set; }
+        public string? Shelter { get; set; }
     }
 }
