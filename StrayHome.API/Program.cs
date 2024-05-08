@@ -20,7 +20,7 @@ using StrayHome.Infrastructure.SeleniumService;
 using Quartz.Impl;
 using Quartz.Spi;
 using StrayHome.Infrastructure.Jobs;
-using StrayHome.Infrastructure.QuartzHostedService;
+using QuartzHostedService = StrayHome.API.HostedService.QuartzHostedService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,7 +76,7 @@ builder.Services.AddSingleton<IScheduler>(provider =>
     var schedulerFactory = provider.GetRequiredService<ISchedulerFactory>();
     return schedulerFactory.GetScheduler().Result;
 });
-builder.Services.AddHostedService<StrayHome.Infrastructure.QuartzHostedService.QuartzHostedService>();
+builder.Services.AddHostedService<QuartzHostedService>();
 builder.Services.AddScoped<IExcelProcessingService, ExcelProcessingService>();
 builder.Services.AddScoped<ISeleniumService, SeleniumService>();
 builder.Services.AddHostedService<MigrationHostedService>();
