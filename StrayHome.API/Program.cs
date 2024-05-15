@@ -21,6 +21,7 @@ using Quartz.Impl;
 using Quartz.Spi;
 using StrayHome.Infrastructure.Jobs;
 using QuartzHostedService = StrayHome.API.HostedService.QuartzHostedService;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,6 +83,19 @@ builder.Services.AddScoped<ISeleniumService, SeleniumService>();
 builder.Services.AddHostedService<MigrationHostedService>();
 builder.Services.AddHostedService<UserHostedService>();
 builder.Services.AddMemoryCache();
+builder.Services.AddCors(c =>
+{
+    c.AddPolicy("AllowAllOrigins", options => options.AllowAnyOrigin().AllowAnyMethod()
+     .AllowAnyHeader());
+});
+
+//JSON Serializer
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft
+    .Json.ReferenceLoopHandling.Ignore)
+    .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
+    = new DefaultContractResolver());
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -96,6 +110,12 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseCors("AllowAllOrigins");
+
+app.MapFallbackToFile("index.html");
+app.UseStaticFiles();
+app.UseDefaultFiles();
 
 app.MapControllers();
 
