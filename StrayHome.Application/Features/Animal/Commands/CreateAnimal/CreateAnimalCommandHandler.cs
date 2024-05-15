@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.CreateShopItem;
 using StrayHome.Domain.Entities;
+using StrayHome.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,11 @@ namespace StrayHome.Application.Features.Commands.CreateAnimal
                 Photos = request.Photos,
                 IsAvailableForAdoption = request.IsAvailableForAdoption,
                 ShelterID = request.ShelterID,
-
+                Location = request.Location,
+                TypeAnimal = request.TypeAnimal == "Cat" ? TypeAnimal.Cat : request.TypeAnimal == "Dog" ? TypeAnimal.Dog : TypeAnimal.Else,
+                Sex = request.Sex == "M" ? GenderAnimal.M : request.Sex == "F" ? GenderAnimal.F : GenderAnimal.Else,
+                Sterilization = request.Sterilization,
+                Age = request.Age
             };
 
             _context.Animals.Add(animal);

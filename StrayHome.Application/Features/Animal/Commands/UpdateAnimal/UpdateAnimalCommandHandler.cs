@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.UpdateShopItem;
 using StrayHome.Domain.Entities;
+using StrayHome.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +41,14 @@ namespace StrayHome.Application.Features.Commands.UpdateAnimal
                 var sourceValue = property.GetValue(request);
                 if (sourceValue != null)
                 {
+                    if(property.Name=="TypeAnimal")
+                    {
+                        sourceValue = sourceValue == "Cat" ? TypeAnimal.Cat : sourceValue == "Dog" ? TypeAnimal.Dog : TypeAnimal.Else;
+                    }
+                    if (property.Name == "Sex")
+                    {
+                        sourceValue = sourceValue == "M" ? GenderAnimal.M : sourceValue == "F" ? GenderAnimal.F : GenderAnimal.Else;
+                    }
                     var destinationProperty = typeof(Animal).GetProperty(property.Name);
                     destinationProperty?.SetValue(ToUpdate, sourceValue);
                 }
@@ -48,8 +58,12 @@ namespace StrayHome.Application.Features.Commands.UpdateAnimal
             animal.Name = ToUpdate.Name;
             animal.Description = ToUpdate.Description;
             animal.IsAvailableForAdoption = ToUpdate.IsAvailableForAdoption;
-            animal.ShelterID = ToUpdate.ShelterID;
             animal.Photos = ToUpdate.Photos;
+            animal.Location = ToUpdate.Location;
+            animal.TypeAnimal = ToUpdate.TypeAnimal;
+            animal.Sex = ToUpdate.Sex ;
+            animal.Sterilization = ToUpdate.Sterilization;
+            animal.Age = ToUpdate.Age;
             await _context.SaveChangesAsync();
 
             return animal;

@@ -4,6 +4,7 @@ using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Application.Features.Commands.CreateAnimal;
 using StrayHome.Domain.DTO;
 using StrayHome.Domain.Entities;
+using StrayHome.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,12 @@ namespace StrayHome.Application.Features.Commands.AddListOfAnimals
                     Name = data[i, 0],
                     Description = data[i, 1],
                     Photos = data[i, 2],
-                    IsAvailableForAdoption = data[i, 3] == "1" ? true : false
+                    IsAvailableForAdoption = data[i, 3] == "1" ? true : false,
+                    Location = data[i, 4],
+                    TypeAnimal = data[i, 5] == "Cat" ? TypeAnimal.Cat : data[i, 5] == "Dog" ? TypeAnimal.Dog : TypeAnimal.Else,
+                    Sex = data[i, 6] == "M" ? GenderAnimal.M : data[i, 6] == "F" ? GenderAnimal.F : GenderAnimal.Else,
+                    Sterilization = data[i, 7] == "1" ? true : false,
+                    Age = Int32.Parse(data[i, 8])
                 };
 
                 animalList.Add(animal);
@@ -56,6 +62,11 @@ namespace StrayHome.Application.Features.Commands.AddListOfAnimals
                     Photos = animal.Photos,
                     IsAvailableForAdoption = animal.IsAvailableForAdoption,
                     ShelterID = shelterAdmins.ShelterID,
+                    Location = animal.Location,
+                    TypeAnimal = animal.TypeAnimal,
+                    Sex = animal.Sex,
+                    Sterilization = animal.Sterilization,
+                    Age = animal.Age
 
                 };
 

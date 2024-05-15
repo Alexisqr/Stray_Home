@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using Org.BouncyCastle.Utilities.Encoders;
 using StrayHome.Application.Contracts.Persistence;
 using StrayHome.Domain.Entities;
+using StrayHome.Domain.Enums;
 
 namespace StrayHome.Infrastructure.ExcelService
 {
@@ -19,7 +21,7 @@ namespace StrayHome.Infrastructure.ExcelService
         {
             int startRow = 3;
             int startColumn = 2; 
-            int endColumn = 5;
+            int endColumn = 10;
 
             using (var stream = new MemoryStream())
             {
@@ -67,6 +69,12 @@ namespace StrayHome.Infrastructure.ExcelService
             firstRow.CreateCell(1).SetCellValue("Description");
             firstRow.CreateCell(2).SetCellValue("Photos");
             firstRow.CreateCell(3).SetCellValue("IsAvailableForAdoption");
+            firstRow.CreateCell(4).SetCellValue("Location");
+            firstRow.CreateCell(5).SetCellValue("TypeAnimal");
+            firstRow.CreateCell(6).SetCellValue("Sex");
+            firstRow.CreateCell(7).SetCellValue("Sterilization");
+            firstRow.CreateCell(8).SetCellValue("Age");
+
 
             int index = 1;
             foreach (var animal in animals)
@@ -76,8 +84,13 @@ namespace StrayHome.Infrastructure.ExcelService
                 row.CreateCell(1).SetCellValue(animal.Description);
                 row.CreateCell(2).SetCellValue(animal.Photos);
                 row.CreateCell(3).SetCellValue(animal.IsAvailableForAdoption ? "1" : "0");
+                row.CreateCell(4).SetCellValue(animal.Location);
+                row.CreateCell(5).SetCellValue(animal.TypeAnimal.ToString());
+                row.CreateCell(6).SetCellValue(animal.Sex.ToString());
+                row.CreateCell(7).SetCellValue(animal.Sterilization);
+                row.CreateCell(8).SetCellValue(animal.Age);
             }
-
+                
 
             using (var filePath = new MemoryStream())
             {

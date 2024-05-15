@@ -2,20 +2,16 @@
 using Microsoft.AspNetCore.Mvc;
 using StrayHome.Application.Features.Commands.AddListOfAnimals;
 using StrayHome.Application.Features.Commands.CreateAnimal;
-using StrayHome.Application.Features.Commands.CreateShopItem;
 using StrayHome.Application.Features.Commands.DeleteAnimal;
-using StrayHome.Application.Features.Commands.DeleteShopItem;
 using StrayHome.Application.Features.Commands.GetAnimalInExcel;
 using StrayHome.Application.Features.Commands.UpdateAnimal;
-using StrayHome.Application.Features.Commands.UpdateShopItem;
 using StrayHome.Application.Features.Queries.GetAllAnimal;
-using StrayHome.Application.Features.Queries.GetAllShopItem;
 using StrayHome.Application.Features.Queries.GetByIdAnimal;
-using StrayHome.Application.Features.Queries.GetShopItemById;
-using StrayHome.Domain.DTO;
 using StrayHome.Domain.Entities;
-using StrayHome.Infrastructure.ExcelService;
+using Microsoft.AspNetCore.Http;
 using System.Net;
+using StrayHome.Application.Features.Queries.GetByFilterAnimal;
+using StrayHome.Domain.Enums;
 
 namespace StrayHome.API.Controllers
 {
@@ -34,6 +30,13 @@ namespace StrayHome.API.Controllers
         public async Task<ActionResult<IEnumerable<Animal>>> GetAllAnimal()
         {
             var command = new GetAllAnimalQuery();
+            var animals = await _mediator.Send(command);
+            return Ok(animals);
+        }
+        [HttpGet("GetByFilterAnimal")]
+        public async Task<ActionResult<IEnumerable<Animal>>> GetByFilterAnimal(string? location,string? sex,double? age,bool? sterilization,string? typeAnimal,string? shelter)
+        {
+            var command = new GetByFilterAnimalQuery() { Location =location, Sex = sex, Age = age , Sterilization = sterilization, TypeAnimal = typeAnimal ,Shelter = shelter };
             var animals = await _mediator.Send(command);
             return Ok(animals);
         }
@@ -73,22 +76,16 @@ namespace StrayHome.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost("AddListOfAnimals", Name = "AddListOfAnimals")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [HttpPost("AddListOfAnimals")]
         public async Task<ActionResult<int>> AddListOfAnimals(IFormFile file, Guid id)
         {
-            
-            //User
-
-            // тут треба реалізувати або захешувати id юзера
-         
             var command = new AddListOfAnimalsCommand
             {
                 ID = id,
                 File = file
             };
             var result = await _mediator.Send(command);
-            return NoContent();
+            return Ok(result);
         }
         [HttpPost("GetAnimalsInExcel", Name = "GetAnimalsInExcel")]
       
