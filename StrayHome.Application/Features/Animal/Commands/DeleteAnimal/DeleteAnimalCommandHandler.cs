@@ -32,9 +32,11 @@ namespace StrayHome.Application.Features.Commands.DeleteAnimal
             var hopItem_userAnimals = _context.UserAnimals
                 .FirstOrDefault(p => p.AnimalID == request.ID);
 
-            _context.UserAnimals.Remove(hopItem_userAnimals);
-
-       
+            if (hopItem_userAnimals != null)
+            {
+                _context.UserAnimals.Remove(hopItem_userAnimals);
+            }
+   
             var hopItem = _context.Animals
                 .FirstOrDefault(p => p.ID == toDelete.ID);
 

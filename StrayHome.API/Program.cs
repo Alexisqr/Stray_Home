@@ -12,11 +12,16 @@ using Microsoft.AspNetCore.Hosting;
 using StrayHome.Application.Mappings;
 using StrayHome.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
-
+using Quartz;
 using StrayHome.Infrastructure.Authorization;
 using StrayHome.API.HostedService;
 using StrayHome.Infrastructure.ExcelService;
 using StrayHome.Infrastructure.SeleniumService;
+using Quartz.Impl;
+using Quartz.Spi;
+using StrayHome.Infrastructure.Jobs;
+using QuartzHostedService = StrayHome.API.HostedService.QuartzHostedService;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,11 +70,32 @@ builder.Services.AddAuthorization(options =>
         policy.Requirements.Add(new AdminShelterRequirement());
     });
 });
+builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+builder.Services.AddSingleton<UpdateListOfMissingAnimals>();
+builder.Services.AddSingleton<IScheduler>(provider =>
+{
+    var schedulerFactory = provider.GetRequiredService<ISchedulerFactory>();
+    return schedulerFactory.GetScheduler().Result;
+});
+builder.Services.AddHostedService<QuartzHostedService>();
 builder.Services.AddScoped<IExcelProcessingService, ExcelProcessingService>();
 builder.Services.AddScoped<ISeleniumService, SeleniumService>();
 builder.Services.AddHostedService<MigrationHostedService>();
 builder.Services.AddHostedService<UserHostedService>();
 builder.Services.AddMemoryCache();
+builder.Services.AddCors(c =>
+{
+    c.AddPolicy("AllowAllOrigins", options => options.AllowAnyOrigin().AllowAnyMethod()
+     .AllowAnyHeader());
+});
+
+//JSON Serializer
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft
+    .Json.ReferenceLoopHandling.Ignore)
+    .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
+    = new DefaultContractResolver());
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -84,6 +110,12 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseCors("AllowAllOrigins");
+
+app.MapFallbackToFile("index.html");
+app.UseStaticFiles();
+app.UseDefaultFiles();
 
 app.MapControllers();
 
