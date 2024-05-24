@@ -16,7 +16,6 @@ namespace StrayHome.Application.Features.Commands.CreateAnimal
         public string Photos { get; set; }
         public bool IsAvailableForAdoption { get; set; }
 
-        public string Location { get; set; }
         public string TypeAnimal { get; set; }
         public string Sex { get; set; }
         public double Age { get; set; }

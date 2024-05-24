@@ -68,6 +68,12 @@ namespace StrayHome.API.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-      
+        [HttpPost("CreateMissingAnimalSwagger")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult<int>> CreateMissingAnimalSwagger([FromBody] CreateMissingAnimalsSeleniumCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
     }
 }

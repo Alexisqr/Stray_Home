@@ -62,7 +62,7 @@ namespace StrayHome.Application.Features.Commands.AddListOfAnimals
                     Photos = animal.Photos,
                     IsAvailableForAdoption = animal.IsAvailableForAdoption,
                     ShelterID = shelterAdmins.ShelterID,
-                    Location = animal.Location,
+                    Location = _context.Shelters.FirstOrDefault(s => s.ID == shelterAdmins.ShelterID).Address,
                     TypeAnimal = animal.TypeAnimal,
                     Sex = animal.Sex,
                     Sterilization = animal.Sterilization,

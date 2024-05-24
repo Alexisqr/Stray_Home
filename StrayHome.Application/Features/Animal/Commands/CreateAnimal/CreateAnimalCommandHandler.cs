@@ -35,7 +35,7 @@ namespace StrayHome.Application.Features.Commands.CreateAnimal
                 Photos = request.Photos,
                 IsAvailableForAdoption = request.IsAvailableForAdoption,
                 ShelterID = request.ShelterID,
-                Location = request.Location,
+                Location = _context.Shelters.FirstOrDefault(s => s.ID == request.ShelterID).Address,
                 TypeAnimal = request.TypeAnimal == "Cat" ? TypeAnimal.Cat : request.TypeAnimal == "Dog" ? TypeAnimal.Dog : TypeAnimal.Else,
                 Sex = request.Sex == "M" ? GenderAnimal.M : request.Sex == "F" ? GenderAnimal.F : GenderAnimal.Else,
                 Sterilization = request.Sterilization,

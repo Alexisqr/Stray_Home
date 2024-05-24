@@ -59,7 +59,6 @@ namespace StrayHome.Application.Features.Commands.UpdateAnimal
             animal.Description = ToUpdate.Description;
             animal.IsAvailableForAdoption = ToUpdate.IsAvailableForAdoption;
             animal.Photos = ToUpdate.Photos;
-            animal.Location = ToUpdate.Location;
             animal.TypeAnimal = ToUpdate.TypeAnimal;
             animal.Sex = ToUpdate.Sex ;
             animal.Sterilization = ToUpdate.Sterilization;

@@ -2,8 +2,10 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using StrayHome.Application.Contracts.Persistence;
+using StrayHome.Application.Features.Commands.UpdateAnimal;
 using StrayHome.Application.Features.Commands.UpdateShopItem;
 using StrayHome.Domain.Entities;
+using StrayHome.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +48,11 @@ namespace StrayHome.Application.Features.Commands.UpdateShelter
                     var destinationProperty = typeof(Shelter).GetProperty(property.Name);
                     destinationProperty?.SetValue(ToUpdate, sourceValue);
                 }
+            }
+            var animalsToUpdate = await _context.Animals.Where(a => a.ShelterID == request.ID).ToListAsync();
+            foreach (var animal in animalsToUpdate)
+            {
+                animal.Location = ToUpdate.Address; 
             }
 
             var shelter = await _context.Shelters.FirstOrDefaultAsync(p => p.ID == ToUpdate.ID);

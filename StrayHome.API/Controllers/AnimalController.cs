@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Http;
 using System.Net;
 using StrayHome.Application.Features.Queries.GetByFilterAnimal;
 using StrayHome.Domain.Enums;
+using StrayHome.Domain.DTO;
+using StrayHome.Application.Features.Queries.GetFilters;
 
 namespace StrayHome.API.Controllers
 {
@@ -33,10 +35,17 @@ namespace StrayHome.API.Controllers
             var animals = await _mediator.Send(command);
             return Ok(animals);
         }
-        [HttpGet("GetByFilterAnimal")]
-        public async Task<ActionResult<IEnumerable<Animal>>> GetByFilterAnimal(string? location,string? sex,double? age,bool? sterilization,string? typeAnimal,string? shelter)
+        [HttpGet("GetFilters")]
+        public async Task<ActionResult<IEnumerable<FilterDto>>> GetFilters()
         {
-            var command = new GetByFilterAnimalQuery() { Location =location, Sex = sex, Age = age , Sterilization = sterilization, TypeAnimal = typeAnimal ,Shelter = shelter };
+            var command = new GetFiltersQuery();
+            var filters = await _mediator.Send(command);
+            return Ok(filters);
+        }
+        [HttpGet("GetByFilterAnimal")]
+        public async Task<ActionResult<IEnumerable<Animal>>> GetByFilterAnimal(string? location, string? sex, double? age, bool? sterilization, string? typeAnimal, string? shelter)
+        {
+            var command = new GetByFilterAnimalQuery() { Location = location, Sex = sex, Age = age, Sterilization = sterilization, TypeAnimal = typeAnimal, Shelter = shelter };
             var animals = await _mediator.Send(command);
             return Ok(animals);
         }
